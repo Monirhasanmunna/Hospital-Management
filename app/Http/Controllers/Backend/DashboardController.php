@@ -9,6 +9,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        notify()->success("Welcome Dashboard");
         return view('backend.dashboard');
+        
     }
 }
