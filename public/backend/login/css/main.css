@@ -228,11 +228,10 @@ iframe {
 }
 
 .input100 {
-  font-family: Ubuntu-Bold;
-  font-size: 15px;
-  color: #1b3815;
+  font-size: 14px;
+  color: #0b0c0a;
   line-height: 1.2;
-
+  opacity: 0.8;
   position: relative;
   display: block;
   width: 100%;
