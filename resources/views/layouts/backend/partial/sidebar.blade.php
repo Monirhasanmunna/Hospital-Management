@@ -16,18 +16,206 @@
       Features
     </div>
     <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
-        aria-controls="collapseForm">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Pharmacy-menu" aria-expanded="true"
+        aria-controls="Pharmacy-menu">
         <i class="fab fa-fw fa-wpforms"></i>
-        <span>Forms</span>
+        <span>Pharmacy</span>
       </a>
-      <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+      <div id="Pharmacy-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Forms</h6>
-          <a class="collapse-item" href="form_basics.html">Form Basics</a>
-          <a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>
+          <a class="collapse-item" href="">Add Category</a>
+          <a class="collapse-item" href="">Category List</a>
+          <a class="collapse-item" href="">Add Purchase</a>
+          <a class="collapse-item" href="">Purchase List</a>
+          <a class="collapse-item" href="">Add Supplier</a>
+          <a class="collapse-item" href="">Supplier List</a>
+          <a class="collapse-item" href="">Report</a>
         </div>
       </div>
     </li>
-    <hr class="sidebar-divider">
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pathology-menu" aria-expanded="true"
+        aria-controls="pathology-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>Pathology</span>
+      </a>
+      <div id="pathology-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="">Generate Bill</a>
+          <a class="collapse-item" href="">New Patient</a>
+          <a class="collapse-item" href="">Add category</a>
+          <a class="collapse-item" href="">Category List</a>
+          <a class="collapse-item" href="">Add Parameter</a>
+          <a class="collapse-item" href="">Parameter List</a>
+          <a class="collapse-item" href="">Add Unit</a>
+          <a class="collapse-item" href="">Unit List</a>
+          <a class="collapse-item" href="">Set Pathology</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#IPD-menu" aria-expanded="true"
+        aria-controls="IPD-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>IPD</span>
+      </a>
+      <div id="IPD-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="">Add Patient</a>
+          <a class="collapse-item" href=""></a>
+          <a class="collapse-item" href="">Discharge Patient</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ICU-menu" aria-expanded="true"
+        aria-controls="IPD-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>ICU</span>
+      </a>
+      <div id="ICU-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="">Patient List</a>
+          <a class="collapse-item" href="">Medicine Order</a>
+          <a class="collapse-item" href="">Order List</a>
+          <a class="collapse-item" href="">Patient Condition Note</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Finance-menu" aria-expanded="true"
+        aria-controls="IPD-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>Finance</span>
+      </a>
+      <div id="Finance-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="">Add Account</a>
+          <a class="collapse-item" href="">Account List</a>
+          <a class="collapse-item" href="">Income</a>
+          <a class="collapse-item" href="">Referral Payment</a>
+        </div>
+      </div>
+    </li>
+    {{-- <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#IPD-menu" aria-expanded="true"
+        aria-controls="IPD-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>Bank</span>
+      </a>
+      <div id="IPD-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="">Add Bank</a>
+          <a class="collapse-item" href="">Bank List</a>
+          <a class="collapse-item" href="">Bank Transaction</a>
+        </div>
+      </div>
+    </li> --}}
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Referral-menu" aria-expanded="true"
+        aria-controls="IPD-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>Referral</span>
+      </a>
+      <div id="Referral-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="">Add referral</a>
+          <a class="collapse-item" href="">Referral List</a>
+          <a class="collapse-item" href="">Referral Payment</a>
+          <a class="collapse-item" href="">Report</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Bank-menu" aria-expanded="true"
+        aria-controls="IPD-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>Bank</span>
+      </a>
+      <div id="Bank-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="">Add Bank</a>
+          <a class="collapse-item" href="">Bank List</a>
+          <a class="collapse-item" href="">Bank Transaction</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#HRM-menu" aria-expanded="true"
+        aria-controls="IPD-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>HRM</span>
+      </a>
+      <div id="HRM-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="">Add Department</a>
+          <a class="collapse-item" href="">Department List</a>
+          <a class="collapse-item" href="">Add Employee</a>
+          <a class="collapse-item" href="">Employee List</a>
+          <a class="collapse-item" href="">Salary Particular</a>
+          <a class="collapse-item" href="">Attendance</a>
+          <a class="collapse-item" href="">Payroll</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Inventory-menu" aria-expanded="true"
+        aria-controls="IPD-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>Inventory</span>
+      </a>
+      <div id="Inventory-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+      <a class="collapse-item" href="">Category</a>
+      <a class="collapse-item" href="">Add Item</a>
+      <a class="collapse-item" href="">Item List</a>
+      <a class="collapse-item" href="">Purchase</a>
+      <a class="collapse-item" href="">Supplier</a>
+      <a class="collapse-item" href="">Stock Deduct/Used</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Report-menu" aria-expanded="true"
+        aria-controls="IPD-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>Report</span>
+      </a>
+      <div id="Report-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="">Daily Transaction Report</a>
+          <a class="collapse-item" href="">All Transaction Report</a>
+          <a class="collapse-item" href="">IPD Report</a>
+          <a class="collapse-item" href="">IPD Balance Report</a>
+          <a class="collapse-item" href="">IPD Discharge Report</a>
+          <a class="collapse-item" href="">Pharmacy Bill Report</a>
+          <a class="collapse-item" href="">OT Report</a>
+          <a class="collapse-item" href="">Income Report</a>
+          <a class="collapse-item" href="">Expense Report</a>
+          <a class="collapse-item" href="">Payroll Report</a>
+          <a class="collapse-item" href="">Inventory Report</a>
+          <a class="collapse-item" href="">Attendance Report</a>
+          <a class="collapse-item" href="">Patient Bill Report</a>
+          <a class="collapse-item" href="">Referral Report</a>
+          <a class="collapse-item" href="">Pathology Report</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Setting-menu" aria-expanded="true"
+        aria-controls="IPD-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>Setting</span>
+      </a>
+      <div id="Setting-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="">General Setting</a>
+          <a class="collapse-item" href="">Hospital Change</a>
+          <a class="collapse-item" href="">Floor Create</a>
+          <a class="collapse-item" href="">Cabin Create</a>
+          <a class="collapse-item" href="">Bed Create</a>
+          <a class="collapse-item" href="">Operation</a>
+        </div>
+      </div>
+    </li>
   </ul>

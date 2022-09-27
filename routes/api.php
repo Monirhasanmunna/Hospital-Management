@@ -17,3 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('test/{name}',function($name){
+    
+    $datas = ["rakib","riayd","rakib"];
+    $new = [];
+    foreach($datas as $data)
+    {
+        if($data == $name)
+            $new[] = $data; 
+    }
+    return $new ?? "not available";
+});
