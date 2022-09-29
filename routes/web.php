@@ -38,14 +38,4 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/delete/{id}',[PharmacySupplierController::class,'destroy'])->name('delete');
     });
 
-    // Route::group(['as'=>'pathology.category.','prefix'=>'pathology/category','namespace'=>'Pathology'],function(){
-        
-    //     Route::get('/index',[CategoryController::class,'index'])->name('index');
-    //     Route::get('/create',[SupplierController::class,'create'])->name('create');
-    //     Route::post('/store',[SupplierController::class,'store'])->name('store');
-    //     Route::get('/edit/{id}',[SupplierController::class,'edit'])->name('edit');
-    //     Route::put('/update/{id}',[SupplierController::class,'update'])->name('update');
-    //     Route::get('/delete/{id}',[SupplierController::class,'destroy'])->name('delete');
-    // });
-
 });
