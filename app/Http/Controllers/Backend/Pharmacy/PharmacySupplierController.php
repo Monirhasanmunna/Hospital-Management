@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Backend\Pharmacy;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pharmacy\Category;
-use App\Models\Pharmacy\pharmacyCategory;
+use App\Models\Pharmacy\pharmacySupplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class CategoryController extends Controller
+class PharmacySupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = pharmacyCategory::all();
-        return view('backend.pharmacy.category.index',compact('categories'));
+        $suppliers = pharmacySupplier::all();
+        return view('backend.pharmacy.supplier.index',compact('suppliers'));
     }
 
     /**
@@ -28,7 +27,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('backend.pharmacy.category.create');
+        return view('backend.pharmacy.supplier.create');
     }
 
     /**
@@ -40,16 +39,18 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'  => 'required|max:100|unique:pharmacy_categories'
+            'name'  => 'required|max:200|unique:pharmacy_suppliers',
+            'code'  => 'required'
         ]);
 
-        pharmacyCategory::create([
+        pharmacySupplier::create([
             'name'  => $request->name,
-            'slug'  => Str::slug($request->name)
+            'slug'  => Str::slug($request->name),
+            'code'  => $request->code
         ]);
 
-        notify()->success("Category Created");
-        return redirect()->route('app.pharmacy.category.index');
+        notify()->success('Supplier Created');
+        return redirect()->route('app.pharmacy.supplier.index');
     }
 
     /**
@@ -71,8 +72,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-       $category = pharmacyCategory::findOrfail($id);
-       return view('backend.pharmacy.category.create',compact('category'));
+        $supplier = pharmacySupplier::findOrfail($id);
+        return view('backend.pharmacy.supplier.create',compact('supplier'));
     }
 
     /**
@@ -85,16 +86,18 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'  => 'required|max:100',
+            'name'  => 'required|max:200',
+            'code'  => 'required'
         ]);
 
-        $category = pharmacyCategory::findOrfail($id)->update([
+        pharmacySupplier::findOrfail($id)->update([
             'name'  => $request->name,
-            'slug'  => Str::slug($request->name)
+            'slug'  => Str::slug($request->name),
+            'code'  => $request->code
         ]);
 
-        notify()->success("Category Updated");
-        return redirect()->route('app.pharmacy.category.index');
+        notify()->success('Supplier Updated');
+        return redirect()->route('app.pharmacy.supplier.index');
     }
 
     /**
@@ -105,9 +108,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = pharmacyCategory::findOrfail($id);
-        $category->delete();
-        return response()->json($category);
-        
+        $supplier = pharmacySupplier::findOrfail($id);
+        $supplier->delete();
+        return response()->json('success');
     }
 }
