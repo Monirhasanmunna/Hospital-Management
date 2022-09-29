@@ -16,15 +16,15 @@
       Features
     </div>
     <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Pharmacy-menu" aria-expanded="true"
+      <a class="nav-link collapsed" active href="#" data-toggle="collapse" data-target="#Pharmacy-menu" aria-expanded="true"
         aria-controls="Pharmacy-menu">
         <i class="fab fa-fw fa-wpforms"></i>
         <span>Pharmacy</span>
       </a>
-      <div id="Pharmacy-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+      <div id="Pharmacy-menu" class="collapse {{Request::is('app/pharmacy/category*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" href="">Add Category</a>
-          <a class="collapse-item" href="">Category List</a>
+          <a class="collapse-item {{Request::is('app/pharmacy/category/create')?'activate':''}}" href="{{route('app.pharmacy.category.create')}}">Add Category</a>
+          <a class="collapse-item {{Request::is('app/pharmacy/category/index')?'activate':''}}" href="{{route('app.pharmacy.category.index')}}">Category List</a>
           <a class="collapse-item" href="">Add Purchase</a>
           <a class="collapse-item" href="">Purchase List</a>
           <a class="collapse-item" href="">Add Supplier</a>
