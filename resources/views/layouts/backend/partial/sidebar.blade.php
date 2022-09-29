@@ -21,14 +21,14 @@
         <i class="fab fa-fw fa-wpforms"></i>
         <span>Pharmacy</span>
       </a>
-      <div id="Pharmacy-menu" class="collapse {{Request::is('app/pharmacy/category*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+      <div id="Pharmacy-menu" class="collapse {{Request::is('app/pharmacy*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <a class="collapse-item {{Request::is('app/pharmacy/category/create')?'activate':''}}" href="{{route('app.pharmacy.category.create')}}">Add Category</a>
           <a class="collapse-item {{Request::is('app/pharmacy/category/index')?'activate':''}}" href="{{route('app.pharmacy.category.index')}}">Category List</a>
           <a class="collapse-item" href="">Add Purchase</a>
           <a class="collapse-item" href="">Purchase List</a>
-          <a class="collapse-item" href="">Add Supplier</a>
-          <a class="collapse-item" href="">Supplier List</a>
+          <a class="collapse-item {{Request::is('app/pharmacy/supplier/create')?'activate':''}}" href="{{route('app.pharmacy.supplier.create')}}">Add Supplier</a>
+          <a class="collapse-item {{Request::is('app/pharmacy/supplier/index')?'activate':''}}" href="{{route('app.pharmacy.supplier.index')}}">Supplier List</a>
           <a class="collapse-item" href="">Report</a>
         </div>
       </div>
