@@ -6,11 +6,11 @@
 @section('content')
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-gray-800">Categories</h1>
+      <h1 class="h3 mb-0 text-gray-800">Units</h1>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('app.dashboard')}}">Home</a></li>
         <li class="breadcrumb-item">List</li>
-        <li class="breadcrumb-item active" aria-current="page">Categories</li>
+        <li class="breadcrumb-item active" aria-current="page">Units</li>
       </ol>
     </div>
     <div class="row">
@@ -26,13 +26,13 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($categories as $key=>$category)
+                    @foreach ($units as $key=>$unit)
                     <tr>
                       <td>{{$key+1}}</td>
-                      <td>{{$category->name}}</td>
+                      <td>{{$unit->name}}</td>
                       <td>
-                        <a class="btn btn-sm btn-primary" onclick="editCategory({{$category->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i></a>
-                        <a class="btn btn-sm btn-danger"  onclick = 'deleteCategory({{$category->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i></a>
+                        <a class="btn btn-sm btn-primary" onclick="editUnit({{$unit->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <a class="btn btn-sm btn-danger"  onclick = 'deleteUnit({{$unit->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i></a>
                       </td>
                     </tr>
                     @endforeach
@@ -52,15 +52,15 @@
         <div class="col-lg-12">
             <div class="card mb-4">
               <div class="card-header pt-3 pb-2 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Edit Category</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Edit Unit</h6>
               </div>
                 <div class="card-body">
-                    <form action="{{route('app.pathology.category.update',[1])}}" method="POST">
+                    <form action="{{route('app.pathology.unit.update',[1])}}" method="POST">
                         @csrf
-                        <input name="category_id" hidden type="number" id="category_id">
+                        <input name="unit_id" hidden type="number" id="unit_id">
                         <div class="form-group">
-                          <label for="categoryname">Name</label>
-                          <input type="text" class="form-control" name="name" id="categoryname" class="@error('name') is-invalid @enderror">
+                          <label for="unitname">Name</label>
+                          <input type="text" class="form-control" name="name" id="unitname" class="@error('name') is-invalid @enderror">
                           @error('name')
                               <div class="text-danger">{{ $message }}</div>
                           @enderror
@@ -79,19 +79,19 @@
 @push('js')
   <script>
 
-    function editCategory(id){
+    function editUnit(id){
       $.ajax({
-        url       : '/app/pathology/category/edit/'+id,
+        url       : '/app/pathology/unit/edit/'+id,
         Type      : 'GET',
         dataType  : 'json',
         success   : function(response){
-          $("#category_id").val(response.id);
-          $("#categoryname").val(response.name);
+          $("#unit_id").val(response.id);
+          $("#unitname").val(response.name);
         }
       });
     }
 
-    function deleteCategory(id){
+    function deleteUnit(id){
 
       Swal.fire({
           title: 'Are you sure?',
@@ -109,7 +109,7 @@
               'success'
             )
             $.ajax({
-              url      : '/app/pathology/category/delete/'+id,
+              url      : '/app/pathology/unit/delete/'+id,
               dataType : 'json',
               Type     : 'DELETE',
               success  : function(response){

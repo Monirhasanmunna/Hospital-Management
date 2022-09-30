@@ -16,18 +16,18 @@ class PathologyCategorySeeder extends Seeder
     public function run()
     {
         pathologyCategory::updateOrCreate([
-            'name' => 'demo1',
-            'slug' => 'demo1'
+            'name' => 'Forensic pathology',
+            'slug' => 'forensic pathology'
         ]);
 
         pathologyCategory::updateOrCreate([
-            'name' => 'demo2',
-            'slug' => 'demo2'
+            'name' => 'Histopathology',
+            'slug' => 'histopathology'
         ]);
 
         pathologyCategory::updateOrCreate([
-            'name' => 'demo3',
-            'slug' => 'demo3'
+            'name' => 'Neuropathology',
+            'slug' => 'neuropathology'
         ]);
     }
 }

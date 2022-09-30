@@ -47,8 +47,8 @@
           <a class="collapse-item {{Request::is('app/pathology/category/index')?'activate':''}}" href="{{route('app.pathology.category.index')}}">Category List</a>
           <a class="collapse-item" href="">Add Parameter</a>
           <a class="collapse-item" href="">Parameter List</a>
-          <a class="collapse-item" href="">Add Unit</a>
-          <a class="collapse-item" href="">Unit List</a>
+          <a class="collapse-item {{Request::is('app/pathology/unit/create')?'activate':''}}" href="{{route('app.pathology.unit.create')}}">Add Unit</a>
+          <a class="collapse-item {{Request::is('app/pathology/unit/index')?'activate':''}}" href="{{route('app.pathology.unit.index')}}">Unit List</a>
           <a class="collapse-item" href="">Set Pathology</a>
         </div>
       </div>
