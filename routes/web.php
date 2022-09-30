@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\Pathology\PathologyCategoryController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacyCategoryController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacySupplierController;
 
@@ -38,4 +39,14 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/delete/{id}',[PharmacySupplierController::class,'destroy'])->name('delete');
     });
 
+
+    Route::group(['as'=>'pathology.category.','prefix'=>'pathology/category','namespace'=>'Pathology'],function(){
+        
+        Route::get('/index',[PathologyCategoryController::class,'index'])->name('index');
+        Route::get('/create',[PathologyCategoryController::class,'create'])->name('create');
+        Route::post('/store',[PathologyCategoryController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[PathologyCategoryController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[PathologyCategoryController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[PathologyCategoryController::class,'destroy'])->name('delete');
+    });
 });

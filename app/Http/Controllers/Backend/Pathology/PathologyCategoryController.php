@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Backend\Pathology;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pathology\pathologyCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PathologyCategoryController extends Controller
 {
@@ -14,7 +16,8 @@ class PathologyCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = pathologyCategory::all();
+        return view('backend.pathology.category.index',compact('categories'));
     }
 
     /**
@@ -24,7 +27,7 @@ class PathologyCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.pathology.category.create');
     }
 
     /**
@@ -35,7 +38,17 @@ class PathologyCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'  => 'required|unique:pathology_categories'
+        ]);
+
+        pathologyCategory::create([
+            'name'  => $request->name,
+            'slug'  => Str::slug($request->name)
+        ]);
+
+        notify()->success('Category Created');
+        return redirect()->route('app.pathology.category.index');
     }
 
     /**
@@ -56,8 +69,9 @@ class PathologyCategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    {   
+        $category = pathologyCategory::findOrfail($id);
+        return response()->json($category);
     }
 
     /**
@@ -67,9 +81,19 @@ class PathologyCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
-        //
+        $request->validate([
+            'name'  => 'required|unique:pathology_categories'
+        ]);
+
+        pathologyCategory::findOrfail($request->category_id)->update([
+            'name'  => $request->name,
+            'slug'  => Str::slug($request->name)
+        ]);
+
+        notify()->success('Category Updated');
+        return redirect()->back();
     }
 
     /**
@@ -80,6 +104,8 @@ class PathologyCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = pathologyCategory::findOrfail($id);
+        $category->delete();
+        return response()->json($category);
     }
 }
