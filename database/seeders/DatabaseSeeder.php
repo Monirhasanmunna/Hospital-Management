@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PathologyCategorySeeder::class);
         $this->call(PathologyUnitSeeder::class);
+        $this->call(PathologyTestSeeder::class);
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\Pathology\PathologyCategoryController;
+use App\Http\Controllers\Backend\Pathology\PathologyTestController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacyCategoryController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacySupplierController;
 use App\Http\Controllers\Backend\Pathology\PathologyUnitController;
@@ -58,5 +59,16 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/edit/{id}',[PathologyUnitController::class,'edit'])->name('edit');
         Route::post('/update/{id}',[PathologyUnitController::class,'update'])->name('update');
         Route::get('/delete/{id}',[PathologyUnitController::class,'destroy'])->name('delete');
+    });
+
+
+    Route::group(['as'=>'pathology.test.','prefix'=>'pathology/test','namespace'=>'Pathology'],function(){
+        
+        Route::get('/index',[PathologyTestController::class,'index'])->name('index');
+        Route::get('/create',[PathologyTestController::class,'create'])->name('create');
+        Route::post('/store',[PathologyTestController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[PathologyTestController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[PathologyTestController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[PathologyTestController::class,'destroy'])->name('delete');
     });
 });

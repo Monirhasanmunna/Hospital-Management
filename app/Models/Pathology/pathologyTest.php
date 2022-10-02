@@ -5,13 +5,13 @@ namespace App\Models\Pathology;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class pathologyCategory extends Model
+class pathologyTest extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
 
-    public function tests()
+    public function category()
     {
-        return $this->hasMany(pathologyTest::class);
+        return $this->belongsTo(pathologyCategory::class,'category_id');
     }
 }
