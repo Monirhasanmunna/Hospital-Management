@@ -10,7 +10,7 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('app.dashboard')}}">Home</a></li>
         <li class="breadcrumb-item">List</li>
-        <li class="breadcrumb-item active" aria-current="page">Units</li>
+        <li class="breadcrumb-item active" aria-current="page">Doctor</li>
       </ol>
     </div>
     <div class="row">
