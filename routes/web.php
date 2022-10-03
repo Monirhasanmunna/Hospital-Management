@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\Pathology\PathologyCategoryController;
+use App\Http\Controllers\Backend\Pathology\pathologyDoctorController;
 use App\Http\Controllers\Backend\Pathology\PathologyTestController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacyCategoryController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacySupplierController;
@@ -51,6 +52,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/delete/{id}',[PathologyCategoryController::class,'destroy'])->name('delete');
     });
 
+
     Route::group(['as'=>'pathology.unit.','prefix'=>'pathology/unit','namespace'=>'Pathology'],function(){
         
         Route::get('/index',[PathologyUnitController::class,'index'])->name('index');
@@ -62,7 +64,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
     });
 
 
-    Route::group(['as'=>'pathology.test.','prefix'=>'pathology/test','namespace'=>'Pathology'],function(){
+    Route::group(['as'=>'setting.test.','prefix'=>'setting/test','namespace'=>'Pathology'],function(){
         
         Route::get('/index',[PathologyTestController::class,'index'])->name('index');
         Route::get('/create',[PathologyTestController::class,'create'])->name('create');
@@ -70,5 +72,17 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/edit/{id}',[PathologyTestController::class,'edit'])->name('edit');
         Route::post('/update/{id}',[PathologyTestController::class,'update'])->name('update');
         Route::get('/delete/{id}',[PathologyTestController::class,'destroy'])->name('delete');
+        
+    });
+
+    Route::group(['as'=>'setting.doctor.','prefix'=>'setting/doctor','namespace'=>'Pathology'],function(){
+        
+        Route::get('/index',[pathologyDoctorController::class,'index'])->name('index');
+        Route::get('/create',[pathologyDoctorController::class,'create'])->name('create');
+        Route::post('/store',[pathologyDoctorController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[pathologyDoctorController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[pathologyDoctorController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[pathologyDoctorController::class,'destroy'])->name('delete');
+        
     });
 });

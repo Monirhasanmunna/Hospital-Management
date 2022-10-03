@@ -60,7 +60,7 @@ class PathologyTestController extends Controller
         ]);
 
         notify()->success('Test Created');
-        return redirect()->route('app.pathology.test.index');
+        return redirect()->route('app.setting.test.index');
     }
 
     /**
@@ -114,7 +114,7 @@ class PathologyTestController extends Controller
         ]);
 
         notify()->success('Test Updated');
-        return redirect()->route('app.pathology.test.index');
+        return redirect()->route('app.setting.test.index');
     }
 
     /**

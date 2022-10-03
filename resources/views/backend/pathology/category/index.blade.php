@@ -31,8 +31,15 @@
                       <td>{{$key+1}}</td>
                       <td>{{$category->name}}</td>
                       <td>
-                        <a class="btn btn-sm btn-primary" onclick="editCategory({{$category->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i></a>
-                        <a class="btn btn-sm btn-danger"  onclick = 'deleteCategory({{$category->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i></a>
+                        <div class="dropdown">
+                          <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" onclick="editCategory({{$category->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
+                            <a class="dropdown-item"  onclick = 'deleteCategory({{$category->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                     @endforeach
@@ -51,8 +58,11 @@
       <div class="row">
         <div class="col-lg-12">
             <div class="card mb-4">
-              <div class="card-header pt-3 pb-2 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Edit Category</h6>
+              <div class="card-header pt-3 pb-2 d-flex flex-row align-items-center justify-content-between bg-primary">
+                <h6 class="m-0 font-weight-bold text-white">Edit Category</h6>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
                 <div class="card-body">
                     <form action="{{route('app.pathology.category.update',[1])}}" method="POST">

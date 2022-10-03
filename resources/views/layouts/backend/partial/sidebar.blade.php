@@ -49,8 +49,7 @@
           <a class="collapse-item" href="">Parameter List</a>
           <a class="collapse-item {{Request::is('app/pathology/unit/create')?'activate':''}}" href="{{route('app.pathology.unit.create')}}">Add Unit</a>
           <a class="collapse-item {{Request::is('app/pathology/unit/index')?'activate':''}}" href="{{route('app.pathology.unit.index')}}">Unit List</a>
-          <a class="collapse-item {{Request::is('app/pathology/test/create')?'activate':''}}" href="{{route('app.pathology.test.create')}}">Add Test</a>
-          <a class="collapse-item {{Request::is('app/pathology/test/index')?'activate':''}}" href="{{route('app.pathology.test.index')}}">Test List</a>
+          <a class="collapse-item" href="">Set Pathology</a>
         </div>
       </div>
     </li>
@@ -63,7 +62,6 @@
       <div id="IPD-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <a class="collapse-item" href="">Add Patient</a>
-          <a class="collapse-item" href=""></a>
           <a class="collapse-item" href="">Discharge Patient</a>
         </div>
       </div>
@@ -208,10 +206,14 @@
         <i class="fab fa-fw fa-wpforms"></i>
         <span>Setting</span>
       </a>
-      <div id="Setting-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+      <div id="Setting-menu" class="collapse {{Request::is('app/setting*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <a class="collapse-item" href="">General Setting</a>
           <a class="collapse-item" href="">Hospital Change</a>
+          <a class="collapse-item {{Request::is('app/setting/test/create')?'activate':''}}" href="{{route('app.setting.test.create')}}">Add Test</a>
+          <a class="collapse-item {{Request::is('app/setting/test/index')?'activate':''}}" href="{{route('app.setting.test.index')}}">Test List</a>
+          <a class="collapse-item {{Request::is('app/setting/doctor/create')?'activate':''}}" href="{{route('app.setting.doctor.create')}}">Add Doctor</a>
+          <a class="collapse-item {{Request::is('app/setting/doctor/index')?'activate':''}}" href="{{route('app.setting.doctor.index')}}">Doctor List</a>
           <a class="collapse-item" href="">Floor Create</a>
           <a class="collapse-item" href="">Cabin Create</a>
           <a class="collapse-item" href="">Bed Create</a>

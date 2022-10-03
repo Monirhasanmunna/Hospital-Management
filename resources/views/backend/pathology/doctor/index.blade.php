@@ -6,7 +6,7 @@
 @section('content')
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-gray-800">Units</h1>
+      <h1 class="h3 mb-0 text-gray-800">Doctors</h1>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('app.dashboard')}}">Home</a></li>
         <li class="breadcrumb-item">List</li>
@@ -22,22 +22,24 @@
                     <tr>
                       <th>SL</th>
                       <th>Name</th>
+                      <th>Title</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($units as $key=>$unit)
+                    @foreach ($doctors as $key=>$doctor)
                     <tr>
                       <td>{{$key+1}}</td>
-                      <td>{{$unit->name}}</td>
+                      <td>{{$doctor->name}}</td>
+                      <td>{{$doctor->title}}</td>
                       <td>
                         <div class="dropdown">
                           <button class="btn btn-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Action
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" onclick="editUnit({{$unit->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
-                            <a class="dropdown-item"  onclick = 'deleteUnit({{$unit->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
+                            <a class="dropdown-item" onclick="editDoctor({{$doctor->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
+                            <a class="dropdown-item" onclick ='deleteDoctor({{$doctor->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
                           </div>
                         </div>
                       </td>
@@ -65,13 +67,20 @@
                 </button>
               </div>
                 <div class="card-body">
-                    <form action="{{route('app.pathology.unit.update',[1])}}" method="POST">
+                    <form action="{{route('app.setting.doctor.update',[1])}}" method="POST">
                         @csrf
-                        <input name="unit_id" hidden type="number" id="unit_id">
+                        <input name="doctor_id" hidden type="number" id="doctor_id">
                         <div class="form-group">
-                          <label for="unitname">Name</label>
-                          <input type="text" class="form-control" name="name" id="unitname" class="@error('name') is-invalid @enderror">
+                          <label for="doctorname">Name</label>
+                          <input type="text" class="form-control" name="name" id="doctorname" class="@error('name') is-invalid @enderror">
                           @error('name')
+                              <div class="text-danger">{{ $message }}</div>
+                          @enderror
+                        </div>
+                        <div class="form-group">
+                          <label for="doctortitle">Title</label>
+                          <input type="text" class="form-control" name="title" id="doctortitle" class="@error('title') is-invalid @enderror">
+                          @error('title')
                               <div class="text-danger">{{ $message }}</div>
                           @enderror
                         </div>
@@ -89,19 +98,20 @@
 @push('js')
   <script>
 
-    function editUnit(id){
+    function editDoctor(id){
       $.ajax({
-        url       : '/app/pathology/unit/edit/'+id,
+        url       : '/app/setting/doctor/edit/'+id,
         Type      : 'GET',
         dataType  : 'json',
         success   : function(response){
-          $("#unit_id").val(response.id);
-          $("#unitname").val(response.name);
+          $("#doctor_id").val(response.id);
+          $("#doctorname").val(response.name);
+          $("#doctortitle").val(response.title);
         }
       });
     }
 
-    function deleteUnit(id){
+    function deleteDoctor(id){
 
       Swal.fire({
           title: 'Are you sure?',
@@ -119,7 +129,7 @@
               'success'
             )
             $.ajax({
-              url      : '/app/pathology/unit/delete/'+id,
+              url      : '/app/setting/doctor/delete/'+id,
               dataType : 'json',
               Type     : 'DELETE',
               success  : function(response){

@@ -20,13 +20,13 @@
                 <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                   <thead class="thead-dark">
                     <tr>
-                      <th>#</th>
+                      <th>SL</th>
                       <th>Name</th>
                       <th>Code</th>
                       <th>Category</th>
                       <th>Standard Cost</th>
-                      <th>Refd %</th>
-                      <th>Refd Amount</th>
+                      <th>Refd. Fee(%)</th>
+                      <th>Refd. Fee Amount</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -47,8 +47,16 @@
                       </td>
                       <td>{{$test->refd_amount}}</td>
                       <td>
-                        <a class="btn btn-sm btn-primary" onclick="editTest({{$test->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i></a>
-                        <a class="btn btn-sm btn-danger"  onclick = 'deleteTest({{$test->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i></a>
+                        <div class="dropdown">
+                          <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{-- <i class="fa-solid fa-list"></i> --}}
+                            Action
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" onclick="editTest({{$test->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
+                            <a class="dropdown-item"  onclick = 'deleteTest({{$test->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                     @endforeach
@@ -69,9 +77,12 @@
             <div class="card mb-4">
               <div class="card-header pt-3 pb-2 d-flex flex-row align-items-center justify-content-between bg-primary">
                 <h6 class="m-0 font-weight-bold text-white">Edit Test</h6>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
                 <div class="card-body">
-                    <form action="{{route('app.pathology.test.update',[1])}}" method="POST">
+                    <form action="{{route('app.setting.test.update',[1])}}" method="POST">
                         @csrf
                         <input name="test_id" hidden type="number" id="test_id">
                         <div class="form-row">
@@ -162,7 +173,7 @@
   <script>
     function editTest(id){
       $.ajax({
-        url       : '/app/pathology/test/edit/'+id,
+        url       : '/app/setting/test/edit/'+id,
         Type      : 'GET',
         dataType  : 'json',
         success   : function(response){

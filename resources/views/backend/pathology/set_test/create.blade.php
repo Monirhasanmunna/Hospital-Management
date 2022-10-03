@@ -16,24 +16,8 @@
       <div class="col-lg-12">
           <div class="card mb-4">
               <div class="card-body">
-                  <form action="{{route('app.pathology.test.store')}}" method="POST">
+                  <form action="{{route('app.setting.test.store')}}" method="POST">
                       @csrf
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label for="name">Name</label>
-                          <input type="text" class="form-control" name="name" id="name" class="@error('name') is-invalid @enderror">
-                          @error('name')
-                            <div class="text-danger">{{ $message }}</div>
-                          @enderror
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="code">Code</label>
-                          <input type="text" class="form-control" name="code" id="code" readonly value="{{$data->code+1}}" class="@error('code') is-invalid @enderror">
-                          @error('code')
-                            <div class="text-danger">{{ $message }}</div>
-                          @enderror
-                        </div>
-                      </div>
                       <div class="form-row">
                         <div class="form-group col-md-6">
                           <label for="category">Category</label>
@@ -47,6 +31,32 @@
                             <div class="text-danger">{{ $message }}</div>
                           @enderror
                         </div>
+                        
+                        <div class="form-group col-md-6">
+                          <label for="code">Code</label>
+                          <input type="text" class="form-control" name="code" id="code" readonly value="{{$data->code+1}}" class="@error('code') is-invalid @enderror">
+                          @error('code')
+                            <div class="text-danger">{{ $message }}</div>
+                          @enderror
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="name">Name</label>
+                          <input type="text" class="form-control" name="name" id="name" class="@error('name') is-invalid @enderror">
+                          @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                          @enderror
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="refddiscount">Refd. Fee Rate(%)</label>
+                          <input type="number" name="refd_percent" class="form-control" id="refd" class="@error('refd_percent') is-invalid @enderror">
+                          @error('refd_percent')
+                            <div class="text-danger">{{ $message }}</div>
+                          @enderror
+                        </div>
+                      </div>
+                      <div class="form-row">
                         <div class="form-group col-md-6">
                           <label for="standard_cost">Standard Rate</label>
                           <input type="number" name="standard_rate" class="form-control" id="standard_rate" class="@error('standard_cost') is-invalid @enderror">
@@ -54,17 +64,8 @@
                             <div class="text-danger">{{ $message }}</div>
                           @enderror
                         </div>
-                      </div>
-                      <div class="form-row">
                         <div class="form-group col-md-6">
-                          <label for="refddiscount">Refferd %</label>
-                          <input type="number" name="refd_percent" class="form-control" id="refd" class="@error('refd_percent') is-invalid @enderror">
-                          @error('refd_percent')
-                            <div class="text-danger">{{ $message }}</div>
-                          @enderror
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="refdamount">Refferd Amount</label>
+                          <label for="refdamount">Refd. Fee Amount</label>
                           <input type="number" name="refd_amount" readonly class="form-control" id="refdamount" class="@error('refd_amount') is-invalid @enderror">
                           @error('refd_amount')
                             <div class="text-danger">{{ $message }}</div>
@@ -84,7 +85,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(".js-example-placeholder-single").select2({
-            placeholder: "Choose One",
+            placeholder: "--Select One--",
             allowClear: true
         });
     </script>
