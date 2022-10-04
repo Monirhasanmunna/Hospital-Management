@@ -4,11 +4,13 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\Pathology\PathologyCategoryController;
 use App\Http\Controllers\Backend\Pathology\pathologyDoctorController;
+use App\Http\Controllers\Backend\Pathology\pathologyPatientController;
 use App\Http\Controllers\Backend\Pathology\pathologyReferralController;
 use App\Http\Controllers\Backend\Pathology\PathologyTestController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacyCategoryController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacySupplierController;
 use App\Http\Controllers\Backend\Pathology\PathologyUnitController;
+use App\Models\Pathology\pathologyPatient;
 use Illuminate\Support\Facades\Route;
 
 
@@ -95,6 +97,21 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/edit/{id}',[pathologyReferralController::class,'edit'])->name('edit');
         Route::post('/update/{id}',[pathologyReferralController::class,'update'])->name('update');
         Route::get('/delete/{id}',[pathologyReferralController::class,'destroy'])->name('delete');
+        
+    });
+
+    Route::group(['as'=>'pathology.patient.','prefix'=>'pathology/patient','namespace'=>'Pathology'],function(){
+        
+        Route::get('/index',[pathologyPatientController::class,'index'])->name('index');
+        Route::get('/create',[pathologyPatientController::class,'create'])->name('create');
+
+        // Ajax Route
+        Route::get('/test/{id}',[pathologyPatientController::class,'testInfoById']);
+
+        Route::post('/store',[pathologyPatientController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[pathologyPatientController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[pathologyPatientController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[pathologyPatientController::class,'destroy'])->name('delete');
         
     });
 });
