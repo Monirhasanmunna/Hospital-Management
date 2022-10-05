@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card mb-1">
-                <div class="card-body pb-1">
+                <div class="card-body py-3">
                     <form action="{{route('app.pathology.patient.store')}}" method="POST">
                         @csrf
                         <div class="row">
@@ -27,7 +27,7 @@
                                     <div class="form-row">
                                         <div class="form-group col-6">
                                             <label for="name">Patient Name</label>
-                                            <input id="name" type="text" class="form-control pro_name @error('name') is-invalid @enderror" name="name" autofocus>
+                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" autofocus>
                                         </div>
                                         <div class="form-group col-4">
                                             <label for="mobile">Mobile</label>
@@ -42,7 +42,7 @@
                                         </div>
                                         <div class="form-group col-2">
                                           <label for="age">Age</label>
-                                          <input id="age" type="number" class="form-control pro_name @error('name') is-invalid @enderror" name="name" autofocus>
+                                          <input id="age" type="number" class="form-control @error('name') is-invalid @enderror" name="age" autofocus>
                                       </div>
                                     </div>
 
@@ -77,7 +77,7 @@
                                     <div class="form-row">
                                       <div class="form-group col-12">
                                         <label for="test">Test</label>
-                                        <select name="test" id="test" class="js-example-placeholder-single js-states form-control" class="@error('test') is-invalid @enderror">
+                                        <select name="test[]" id="test" class="js-example-placeholder-single js-states form-control" multiple="multiple" class="@error('test') is-invalid @enderror">
                                           <option></option>
                                           @foreach ($tests as $test)
                                              <option value="{{$test->id}}">{{$test->name}}</option>
@@ -118,7 +118,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><small>Invoice Total</small></span>
                                             </div>
-                                            <input type="text" id="invoice_total" name="Invoice Total"
+                                            <input type="number" id="invoice_total" name="invoice_total"
                                                 class="form-control form-control-sm" readonly>
                                         </div>
                                         <div class="input-group mb-3">
@@ -229,9 +229,7 @@
             calculation();
       });
 
-      $("#vat,#paid_amount").on('change keyup',function(){
-        calculation();
-      });
+      
       
       function calculation(){
 
@@ -269,5 +267,9 @@
         var paid_amount = $('#paid_amount').val();
         $('#due').val(total-paid_amount);
       }
+
+      $("#vat,#paid_amount").on('change keyup',function(){
+        calculation();
+      });
     </script>
 @endpush

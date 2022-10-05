@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Pathology;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pathology\pathologyDoctor;
+use App\Models\Pathology\pathologyPatient;
 use App\Models\Pathology\pathologyReferral;
 use App\Models\Pathology\pathologyTest;
 use Illuminate\Http\Request;
@@ -53,7 +54,40 @@ class pathologyPatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'              => 'required|max:100',
+            'mobile'            => 'required|min:11',
+            'age'               => 'required',
+            'referral'          => 'required',
+            'doctor'            => 'required',
+            'test'              => 'required',
+            'standard_rate'     => 'required',
+            'discount_amount'   => 'sometimes',
+            'vat_amount'        => 'required',
+            'invoice_total'     => 'required',
+            'total'             => 'required',
+            'paid_amount'       => 'required',
+            'due'               => 'sometimes'
+        ]);
+
+        // return $request->all();
+
+       $patient = pathologyPatient::create([
+            'referral_id'       => $request->referral,
+            'doctor_id'         => $request->doctor,
+            'name'              => $request->name,
+            'mobile'            => $request->mobile,
+            'age'               => $request->age,
+            'vat_amount'        => $request->vat_amount,
+            'total_amount'      => $request->total,
+            'discount_amount'   => $request->discount_amount,
+            'due_amount'        => $request->due
+        ]);
+
+        $patient->tests()->sync($request->input('test'));
+
+        notify()->success('patient added success fully');
+        return redirect()->route('app.pathology.patient.create');
     }
 
     /**
