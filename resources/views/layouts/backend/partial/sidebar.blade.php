@@ -43,6 +43,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
           <a class="collapse-item" href="">Generate Bill</a>
           <a class="collapse-item {{Request::is('app/pathology/patient/create')?'activate':''}}" href="{{route('app.pathology.patient.create')}}">New Patient</a>
+          <a class="collapse-item {{Request::is('app/pathology/patient/index')?'activate':''}}" href="{{route('app.pathology.patient.index')}}">Patient List</a>
           <a class="collapse-item {{Request::is('app/pathology/category/create')?'activate':''}}" href="{{route('app.pathology.category.create')}}">Add Category</a>
           <a class="collapse-item {{Request::is('app/pathology/category/index')?'activate':''}}" href="{{route('app.pathology.category.index')}}">Category List</a>
           <a class="collapse-item" href="">Add Parameter</a>

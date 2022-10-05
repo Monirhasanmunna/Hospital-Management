@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('vat_amount');
             $table->bigInteger('total_amount');
             $table->bigInteger('discount_amount');
+            $table->bigInteger('paid_amount');
             $table->bigInteger('due_amount');
             $table->timestamps();
         });

@@ -18,7 +18,8 @@ class pathologyPatientController extends Controller
      */
     public function index()
     {
-        //
+        $patients = pathologyPatient::orderBy('id','DESC')->get();
+        return view('backend.pathology.patient.index',compact('patients'));
     }
 
     /**
@@ -35,15 +36,12 @@ class pathologyPatientController extends Controller
     }
 
 
-
-
     // Ajax method
     public function testInfoById($id)
     {
         $test = pathologyTest::where('id',$id)->first();
         return response()->json($test);
     }
-
 
 
     /**
@@ -81,13 +79,14 @@ class pathologyPatientController extends Controller
             'vat_amount'        => $request->vat_amount,
             'total_amount'      => $request->total,
             'discount_amount'   => $request->discount_amount,
+            'paid_amount'       => $request->paid_amount,
             'due_amount'        => $request->due
         ]);
 
         $patient->tests()->sync($request->input('test'));
 
-        notify()->success('patient added success fully');
-        return redirect()->route('app.pathology.patient.create');
+        notify()->success('Patient Created');
+        return redirect()->route('app.pathology.patient.index');
     }
 
     /**

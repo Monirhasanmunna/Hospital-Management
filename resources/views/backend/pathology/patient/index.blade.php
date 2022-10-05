@@ -6,11 +6,11 @@
 @section('content')
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-gray-800">Tests</h1>
+      <h1 class="h3 mb-0 text-gray-800">Patients</h1>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('app.dashboard')}}">Home</a></li>
         <li class="breadcrumb-item">List</li>
-        <li class="breadcrumb-item active" aria-current="page">Tests</li>
+        <li class="breadcrumb-item active" aria-current="page">Patient</li>
       </ol>
     </div>
     <div class="row">
@@ -22,30 +22,38 @@
                     <tr>
                       <th>SL</th>
                       <th>Name</th>
-                      <th>Code</th>
-                      <th>Category</th>
-                      <th>Standard Cost</th>
-                      <th>Refd. Fee(%)</th>
-                      <th>Refd. Fee Amount</th>
+                      <th>Age</th>
+                      <th>Mobile</th>
+                      <th>Refd</th>
+                      <th>Doctor</th>
+                      <th>Test</th>
+                      <th>Vat</th>
+                      <th>Discount</th>
+                      <th>Total</th>
+                      <th>Paid</th>
+                      <th>Due</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($tests as $key=>$test)
+                    @foreach ($patients as $key=>$patient)
                     <tr>
                       <td>{{$key+1}}</td>
-                      <td>{{$test->name}}</td>
-                      <td>{{$test->code}}</td>
-                      <td><span class="badge badge-sm badge-primary">{{$test->category->name}}</span></td>
-                      <td>{{$test->standard_rate}}</td>
+                      <td>{{$patient->name}}</td>
+                      <td>{{$patient->age}}</td>
+                      <td>{{$patient->mobile}}</td>
+                      <td>{{$patient->referral->name}}</td>
+                      <td>{{$patient->doctor->name}}</td>
                       <td>
-                        @if ($test->refd_percent)
-                          {{$test->refd_percent}} %
-                        @else
-                            N/A
-                        @endif
+                        @foreach ($patient->tests as $test)
+                          <span class="badge badge-primary">{{$test->name}}</span>
+                        @endforeach
                       </td>
-                      <td>{{$test->refd_amount}}</td>
+                      <td>{{$patient->vat_amount}}</td>
+                      <td>{{$patient->discount_amount}}</td>
+                      <td>{{$patient->total_amount}}</td>
+                      <td>{{$patient->paid_amount}}</td>
+                      <td>{{$patient->due_amount}}</td>
                       <td>
                         <div class="dropdown">
                           <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -53,8 +61,8 @@
                             Action
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" onclick="editTest({{$test->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
-                            <a class="dropdown-item"  onclick = 'deleteTest({{$test->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
+                            <a class="dropdown-item" onclick="editTest({{$patient->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
+                            <a class="dropdown-item"  onclick = 'deleteTest({{$patient->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
                           </div>
                         </div>
                       </td>
@@ -101,7 +109,7 @@
                             @enderror
                           </div>
                         </div>
-                        <div class="form-row">
+                        {{-- <div class="form-row">
                           <div class="form-group col-md-6">
                             <label for="category">Category</label>
                             <select id="category" name="category" class="form-control" class="@error('category') is-invalid @enderror">
@@ -120,7 +128,7 @@
                               <div class="text-danger">{{ $message }}</div>
                             @enderror
                           </div>
-                        </div>
+                        </div> --}}
                         <div class="form-row">
                           <div class="form-group col-md-6">
                             <label for="refddiscount">Refferd Discount</label>
