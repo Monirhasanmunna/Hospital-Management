@@ -271,19 +271,6 @@
     </script>
 
 
-
-<script>
-  $(document).ready(function(){
-    $("#refd_percent").on('change keyup',function(){
-      var standard_rate = $("#standard_rate").val();
-      var refd = $(this).val();
-
-      var reffd_amount = (standard_rate/100)*refd;
-      $("#refd_amount").val(reffd_amount);
-    });
-  });
-</script>
-
   <script>
     function editPatient(id){
       $.ajax({
@@ -291,7 +278,9 @@
         Type      : 'GET',
         dataType  : 'json',
         success   : function(response){
+
           console.log(response);
+
           $("#patient_id").val(response.id);
           $("#name").val(response.name);
           $("#mobile").val(response.mobile);
@@ -306,10 +295,9 @@
           $('#test').val('');
           $.each(response.tests,function(i,v){
 
-            let test = `
-                        <option hidden selected value='${v.id}'>${v.name}</option>
-                      `;
-            $("#test").append(test);
+          let test = `<option hidden selected value='${v.id}'>${v.name}</option>`;
+          $("#test").append(test);
+
             var t_body = `
                 <tr>
                   <td class='sl_no'>${'#'}</td>
@@ -330,22 +318,49 @@
       });
     }
 
+    //New option selected
+    $(document).ready(function(){
+        $('#test').on('change',function(){
+         var test_id = $(this).val();
+          $.ajax({
+            url     : '/app/pathology/patient/test/'+test_id,
+            type    : 'GET',
+            success : function(response){
+              $data = `
+                        <tr>
+                          <td class='tests_id' hidden >${response.id}</td>
+                          <td class='sl_no'>${'#'}</td>
+                          <td>${response.name}</td>
+                          <td>
+                            <input type='text' class="form-control form-control-sm standard_rate" value='${response.standard_rate}' name='standard_rate' readonly></input>
+                          </td>
+                          <td>${response.refd_percent}</td>
+                          <td><input type='text' class="form-control form-control-sm discountamount" value='${response.refd_amount}' name='discount_amount' readonly></input></td>
+                          <td><a href="" class=" btn-danger btn-sm delete-tr"><i class="fa fa-trash"></i></a></td>
+                        </tr>
+                      `;
+              $('#t_body').append($data);
+              calculation();
+            }
+          });
+        });
+      });
+
     //Delete Tr
     $(document).on('click','.delete-tr',function(e){
-            e.preventDefault();
-            $(this).closest('tr').remove();
+          e.preventDefault();
+          $(this).closest('tr').remove();
 
 
-          //delete selected option 
+          //Delete selected option 
            var tests_id = parseInt($(this).closest('tr').find('.tests_id').html());
-           var selected_id  = $("#test").val();
+           var selected_items  = $("#test").val();
 
-          $.each(selected_id,function(index,value){
+          $.each(selected_items,function(index,value){
             if(tests_id == value){
               let id = tests_id;
               $("#test").find("option:selected[value="+id+"]").remove();
             }
-
           });
            
           calculation();
