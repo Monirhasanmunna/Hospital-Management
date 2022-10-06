@@ -56,13 +56,12 @@
                       <td>{{$patient->due_amount}}</td>
                       <td>
                         <div class="dropdown">
-                          <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{-- <i class="fa-solid fa-list"></i> --}}
-                            Action
+                          <button class="btn btn-sm btn-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" onclick="editTest({{$patient->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
-                            <a class="dropdown-item"  onclick = 'deleteTest({{$patient->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
+                            <a class="dropdown-item"  onclick="editPatient({{$patient->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
+                            <a class="dropdown-item"  onclick = 'deletePatient({{$patient->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
                           </div>
                         </div>
                       </td>
@@ -77,8 +76,8 @@
 </div>
 
 <!-- Large modal -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+<div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="row">
         <div class="col-lg-12">
@@ -89,66 +88,170 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-                <div class="card-body">
-                    <form action="{{route('app.setting.test.update',[1])}}" method="POST">
-                        @csrf
-                        <input name="test_id" hidden type="number" id="test_id">
-                        <div class="form-row">
-                          <div class="form-group col-md-6">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" name="name" id="name" class="@error('name') is-invalid @enderror">
-                            @error('name')
-                              <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                          </div>
-                          <div class="form-group col-md-6">
-                            <label for="code">Code</label>
-                            <input type="text" class="form-control" name="code" id="code" class="@error('code') is-invalid @enderror">
-                            @error('code')
-                              <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                          </div>
+              <div class="card-body py-3">
+                <form action="{{route('app.pathology.patient.store')}}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-9 float-left">
+                            <div class="card-body px-0">
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="name">Patient Name</label>
+                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" autofocus>
+                                    </div>
+                                    <input type="number" id="patient_id" name="patient_id" hidden>
+                                    <div class="form-group col-4">
+                                        <label for="mobile">Mobile</label>
+                                        <input id="mobile" type="number"
+                                            class="form-control @error('mobile') is-invalid @enderror" name="mobile"
+                                            autofocus>
+                                        @error('mobile')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-2">
+                                      <label for="age">Age</label>
+                                      <input id="age" type="number" class="form-control @error('name') is-invalid @enderror" name="age" autofocus>
+                                  </div>
+                                </div>
+
+                                <div class="form-row">
+                                  <div class="form-group col-6">
+                                    <label for="referral">Referral</label>
+                                    <select name="referral" id="referral" class="js-example-placeholder-single js-states form-control" class="@error('referral') is-invalid @enderror">
+                                      <option></option>
+                                      @if(isset($referrals))
+                                      @foreach ($referrals as $referral)
+                                         <option value="{{$referral->id}}">{{$referral->name}}</option>
+                                      @endforeach
+                                      @endif
+                                    </select>
+                                    @error('referral')
+                                      <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                  </div>
+
+                                  <div class="form-group col-6">
+                                    <label for="doctor">Doctor</label>
+                                    <select name="doctor" id="doctor" class="js-example-placeholder-single js-states form-control" class="@error('doctor') is-invalid @enderror">
+                                      <option></option>
+                                      @if(isset($doctors))
+                                      @foreach ($doctors as $doctor)
+                                         <option value="{{$doctor->id}}">{{$doctor->name}}</option>
+                                      @endforeach
+                                      @endif
+                                    </select>
+                                    @error('doctor')
+                                      <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                  </div>
+                                </div>
+
+                                <div class="form-row">
+                                  <div class="form-group col-12">
+                                    <label for="test">Test</label>
+                                    <select name="test[]" id="test" class="js-example-placeholder-single js-states form-control" multiple="multiple" class="@error('test') is-invalid @enderror">
+                                      @foreach ($tests as $test)
+                                         <option value="{{$test->id}}">{{$test->name}}</option>
+                                      @endforeach
+                                    </select>
+                                    @error('test')
+                                      <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                  </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-12">
+                                        <table class="table custom-table table-bordered">
+                                            <thead class="thead-dark table-sm">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Rate</th>
+                                                    <th>Discount (%)</th>
+                                                    <th>Discount Amount</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="t_body">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        {{-- <div class="form-row">
-                          <div class="form-group col-md-6">
-                            <label for="category">Category</label>
-                            <select id="category" name="category" class="form-control" class="@error('category') is-invalid @enderror">
-                              @foreach ($categories as $category)
-                                 <option value="{{$category->id}}">{{$category->name}}</option> 
-                              @endforeach
-                            </select>
-                            @error('category')
-                              <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                          </div>
-                          <div class="form-group col-md-6">
-                            <label for="standard_cost">Standard Cost</label>
-                            <input type="number" name="standard_rate" class="form-control" id="standard_rate" class="@error('standard_cost') is-invalid @enderror">
-                            @error('standard_cost')
-                              <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                          </div>
-                        </div> --}}
-                        <div class="form-row">
-                          <div class="form-group col-md-6">
-                            <label for="refddiscount">Refferd Discount</label>
-                            <input type="number" name="refd_percent" class="form-control" id="refd_percent" class="@error('refd_percent') is-invalid @enderror">
-                            @error('refd_percent')
-                              <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                          </div>
-                          <div class="form-group col-md-6">
-                            <label for="refdamount">Refferd Amount</label>
-                            <input type="number" name="refd_amount" class="form-control" id="refd_amount" class="@error('refd_anount') is-invalid @enderror">
-                            @error('refd_anount')
-                              <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                          </div>
+
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><small>Invoice Total</small></span>
+                                        </div>
+                                        <input type="number" id="invoice_total" name="invoice_total"
+                                            class="form-control form-control-sm" readonly>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><small>Discount Amount</small></span>
+                                        </div>
+                                        <input name="discount_amount" type="number" step="any" id="discount_amount"
+                                            class="form-control form-control-sm" readonly>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" style=""><small>Vat (%)</small></span>
+                                        </div>
+                                        <div></div>
+                                        <input type="number" name="vat" id="vat" placeholder="%"
+                                            class="form-control form-control-sm">
+                                        <input type="number" name="vat_amount" id="vat_amount" placeholder="Amount"
+                                            class="form-control form-control-sm" readonly>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><small>Total</small></span>
+                                        </div>
+                                        <input type="number" name="total" id="total"
+                                            class="form-control form-control-sm" readonly>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><small>Paid Amount</small></span>
+                                        </div>
+                                        <input type="number" id="paid_amount" name="paid_amount"
+                                            class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text"><small>Due</small></span>
+                                      </div>
+                                      <input type="number" id="due" name="due"
+                                          class="form-control form-control-sm" readonly>
+                                  </div>
+                                    <div class="row px-3 mt-4">
+                                        <div class="col-sm-5" style="padding: 0 !important;">
+                                            <button type="submit" class="btn btn-sm btn-primary  save-btn"><i
+                                                    class="fa fa-save"></i>
+                                                Save</button>
+                                        </div>
+
+                                        <div class="col-sm-5 ml-auto" style="padding: 0 !important;">
+                                            <a href="" class="btn btn-sm btn-success float-right"><i
+                                                    class="fa fa-list"></i>
+                                                List</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
-                          <button type="submit" class="btn btn-primary">Update</button>
-                    </form>
-                  </div>
+                    </div>
+                </form>
+            </div>
             </div>
           </div>
     </div>
@@ -162,9 +265,12 @@
     <script>
         $(".js-example-placeholder-single").select2({
             placeholder: "Choose One",
-            allowClear: true
+            allowClear: true,
+            width: '100%',
         });
     </script>
+
+
 
 <script>
   $(document).ready(function(){
@@ -179,27 +285,117 @@
 </script>
 
   <script>
-    function editTest(id){
+    function editPatient(id){
       $.ajax({
-        url       : '/app/setting/test/edit/'+id,
+        url       : '/app/pathology/patient/patient/'+id,
         Type      : 'GET',
         dataType  : 'json',
         success   : function(response){
           console.log(response);
-          $("#test_id").val(response.id);
+          $("#patient_id").val(response.id);
           $("#name").val(response.name);
-          $("#code").val(response.code);
-          $("#standard_rate").val(response.standard_rate);
-          $("#refd_percent").val(response.refd_percent);
-          $("#refd_amount").val(response.refd_amount);
+          $("#mobile").val(response.mobile);
+          $("#age").val(response.age);
 
-          var data = `<option selected hidden value='${response.category.id}'>${response.category.name}</option>`;
-          $("#category").append(data);
+          var referral = `<option selected hidden value='${response.referral.id}'>${response.referral.name}</option>`;
+          $("#referral").append(referral);
+          var doctor = `<option selected hidden value='${response.doctor.id}'>${response.doctor.name}</option>`;
+          $("#doctor").append(doctor);
+
+          $('#t_body').html('');
+          $('#test').val('');
+          $.each(response.tests,function(i,v){
+
+            let test = `
+                        <option hidden selected value='${v.id}'>${v.name}</option>
+                      `;
+            $("#test").append(test);
+            var t_body = `
+                <tr>
+                  <td class='sl_no'>${'#'}</td>
+                  <td class='name'>${v.name}</td>
+                  <td class='tests_id' hidden >${v.id}</td>
+                  <td>
+                    <input type='text' class="form-control form-control-sm standard_rate" value='${v.standard_rate}' name='standard_rate' readonly></input>
+                  </td>
+                  <td>${v.refd_percent}</td>
+                  <td><input type='text' class="form-control form-control-sm discountamount" value='${v.refd_amount}' name='discount_amount' readonly></input></td>
+                  <td><a href="" class=" btn-danger btn-sm delete-tr"><i class="fa fa-trash"></i></a></td>
+                </tr>
+              `;
+            $('#t_body').append(t_body);
+          });
+          calculation();
         }
       });
     }
 
-    function deleteTest(id){
+    //Delete Tr
+    $(document).on('click','.delete-tr',function(e){
+            e.preventDefault();
+            $(this).closest('tr').remove();
+
+
+          //delete selected option 
+           var tests_id = parseInt($(this).closest('tr').find('.tests_id').html());
+           var selected_id  = $("#test").val();
+
+          $.each(selected_id,function(index,value){
+            if(tests_id == value){
+              let id = tests_id;
+              $("#test").find("option:selected[value="+id+"]").remove();
+            }
+
+          });
+           
+          calculation();
+      });
+
+  //Calculation function
+  function calculation(){
+
+      var invoice_total = 0;
+      var discount_total = 0;
+
+      //standard rate total calculation 
+      $('.standard_rate').each(function(index,item){
+        let sub_total = $(item).val();
+        invoice_total += parseInt(sub_total);
+      });
+
+      $('#invoice_total').val(invoice_total);
+
+
+      //discount amount calculation 
+      $('.discountamount').each(function(index,item){
+        let sub_discount_amount = $(item).val();
+        discount_total += parseInt(sub_discount_amount);
+      });
+
+      $('#discount_amount').val(discount_total);
+
+
+      //vat and total count
+      var subtotal =  $('#invoice_total').val();
+      var vat      = $('#vat').val();
+      var discount_amount = $('#discount_amount').val();
+
+      var total = (parseInt(subtotal)+parseInt(subtotal/100)*vat)-parseInt(discount_amount);
+      $('#total').val(total);
+      $('#vat_amount').val(parseInt(subtotal/100)*vat);
+
+
+      var paid_amount = $('#paid_amount').val();
+      $('#due').val(total-paid_amount);
+  }
+
+  $("#vat,#paid_amount").on('change keyup',function(){
+      calculation();
+  });
+
+
+
+    function deletePatient(id){
 
       Swal.fire({
           title: 'Are you sure?',
@@ -217,7 +413,7 @@
               'success'
             )
             $.ajax({
-              url      : '/app/pathology/test/delete/'+id,
+              url      : '/app/pathology/patient/delete/'+id,
               dataType : 'json',
               Type     : 'DELETE',
               success  : function(response){

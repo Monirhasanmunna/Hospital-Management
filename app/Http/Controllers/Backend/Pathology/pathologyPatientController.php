@@ -19,7 +19,8 @@ class pathologyPatientController extends Controller
     public function index()
     {
         $patients = pathologyPatient::orderBy('id','DESC')->get();
-        return view('backend.pathology.patient.index',compact('patients'));
+        $tests = pathologyTest::all();
+        return view('backend.pathology.patient.index',compact('patients','tests'));
     }
 
     /**
@@ -108,7 +109,16 @@ class pathologyPatientController extends Controller
      */
     public function edit($id)
     {
-        //
+        $patient = pathologyPatient::with('tests')->findOrfail($id);
+        $referrals = pathologyReferral::all();
+        $doctors = pathologyDoctor::all();
+        return view('backend.pathology.patient.index',compact('patient','referrals','doctors'));
+    }
+
+    public function patientInfoById($id)
+    {
+        $patient = pathologyPatient::with('doctor','referral','tests')->findOrfail($id);
+        return response()->json($patient);
     }
 
     /**
@@ -131,6 +141,7 @@ class pathologyPatientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $patient = pathologyPatient::findOrfail($id)->delete();
+        return response($patient);
     }
 }

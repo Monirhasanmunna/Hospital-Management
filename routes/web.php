@@ -107,6 +107,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
 
         // Ajax Route
         Route::get('/test/{id}',[pathologyPatientController::class,'testInfoById']);
+        Route::get('/patient/{id}',[pathologyPatientController::class,'patientInfoById']);
 
         Route::post('/store',[pathologyPatientController::class,'store'])->name('store');
         Route::get('/edit/{id}',[pathologyPatientController::class,'edit'])->name('edit');
