@@ -359,7 +359,7 @@
           $.each(selected_items,function(index,value){
             if(tests_id == value){
               let id = tests_id;
-              $("#test").find("option:selected[value="+id+"]").remove();
+              $("#test").find(":selected[value="+id+"]").remove();
             }
           });
            

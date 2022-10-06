@@ -230,7 +230,6 @@
       });
 
       
-      
       function calculation(){
 
         var invoice_total = 0;

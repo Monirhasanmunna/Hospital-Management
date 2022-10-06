@@ -104,15 +104,14 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         
         Route::get('/index',[pathologyPatientController::class,'index'])->name('index');
         Route::get('/create',[pathologyPatientController::class,'create'])->name('create');
-
-        // Ajax Route
-        Route::get('/test/{id}',[pathologyPatientController::class,'testInfoById']);
-        Route::get('/patient/{id}',[pathologyPatientController::class,'patientInfoById']);
-
         Route::post('/store',[pathologyPatientController::class,'store'])->name('store');
         Route::get('/edit/{id}',[pathologyPatientController::class,'edit'])->name('edit');
         Route::post('/update/{id}',[pathologyPatientController::class,'update'])->name('update');
         Route::get('/delete/{id}',[pathologyPatientController::class,'destroy'])->name('delete');
+        
+        // Ajax Route
+        Route::get('/test/{id}',[pathologyPatientController::class,'testInfoById']);
+        Route::get('/patient/{id}',[pathologyPatientController::class,'patientInfoById']);
         
     });
 });
