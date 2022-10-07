@@ -2,6 +2,10 @@
 
 @push('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<link rel="stylesheet" href="/resources/demos/style.css">
+
 @endpush
 
 @section('content')
@@ -74,10 +78,12 @@
                                       </div>
                                     </div>
 
+                                    <input type="number[]" multiple='multiple' id="set_input" name="set_input" hidden>
+
                                     <div class="form-row">
                                       <div class="form-group col-12">
                                         <label for="test">Test</label>
-                                        <select name="test[]" id="test" class="js-example-placeholder-single js-states form-control" multiple="multiple" class="@error('test') is-invalid @enderror">
+                                        <select name="test" id="test" class="js-example-placeholder-single js-states form-control"   class="@error('test') is-invalid @enderror">
                                           <option></option>
                                           @foreach ($tests as $test)
                                              <option value="{{$test->id}}">{{$test->name}}</option>
@@ -197,10 +203,15 @@
 
     <script>
       $(document).ready(function(){
+        var tests = [];
         $('#test').on('change',function(){
-         var test_id = $(this).val();
+        var id = $(this).val();
+        
+        tests.push(id);
+        $('#set_input').val(tests);
+          
           $.ajax({
-            url     : '/app/pathology/patient/test/'+test_id,
+            url     : '/app/pathology/patient/test/'+id,
             type    : 'GET',
             success : function(response){
               $data = `
@@ -257,6 +268,7 @@
         var subtotal =  $('#invoice_total').val();
         var vat      = $('#vat').val();
         var discount_amount = $('#discount_amount').val();
+
 
         var total = (parseInt(subtotal)+parseInt(subtotal/100)*vat)-parseInt(discount_amount);
         $('#total').val(total);

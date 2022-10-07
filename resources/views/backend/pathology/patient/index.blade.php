@@ -89,8 +89,9 @@
                 </button>
               </div>
               <div class="card-body py-3">
-                <form action="{{route('app.pathology.patient.store')}}" method="POST">
+                <form action="{{route('app.pathology.patient.update',[1])}}" method="POST">
                     @csrf
+                    <input hidden id="patient_id" type="number">
                     <div class="row">
                         <div class="col-md-9 float-left">
                             <div class="card-body px-0">

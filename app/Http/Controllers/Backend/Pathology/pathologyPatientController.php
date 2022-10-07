@@ -7,6 +7,7 @@ use App\Models\Pathology\pathologyDoctor;
 use App\Models\Pathology\pathologyPatient;
 use App\Models\Pathology\pathologyReferral;
 use App\Models\Pathology\pathologyTest;
+use Faker\Core\Number;
 use Illuminate\Http\Request;
 
 class pathologyPatientController extends Controller
@@ -53,6 +54,7 @@ class pathologyPatientController extends Controller
      */
     public function store(Request $request)
     {
+       
         $request->validate([
             'name'              => 'required|max:100',
             'mobile'            => 'required|min:11',
@@ -84,7 +86,17 @@ class pathologyPatientController extends Controller
             'due_amount'        => $request->due
         ]);
 
-        $patient->tests()->sync($request->input('test'));
+        
+        $stringSplit = str_split($request->set_input);
+        $removeComas =  str_replace(',', '', $stringSplit);
+ 
+        $stringToNumber = array_map(function($removeComas) {
+         return intval($removeComas);
+         },$removeComas);
+ 
+        $deleteAllZeros = array_diff($stringToNumber, array(0));
+
+        $patient->tests()->sync($deleteAllZeros);
 
         notify()->success('Patient Created');
         return redirect()->route('app.pathology.patient.index');
@@ -130,7 +142,41 @@ class pathologyPatientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name'              => 'required|max:100',
+            'mobile'            => 'required|min:11',
+            'age'               => 'required',
+            'referral'          => 'required',
+            'doctor'            => 'required',
+            'test'              => 'required',
+            'standard_rate'     => 'required',
+            'discount_amount'   => 'sometimes',
+            'vat_amount'        => 'required',
+            'invoice_total'     => 'required',
+            'total'             => 'required',
+            'paid_amount'       => 'required',
+            'due'               => 'sometimes'
+        ]);
+
+        // return $request->all();
+
+       $patient = pathologyPatient::findOrfail($request->patiend_id)->updated([
+            'referral_id'       => $request->referral,
+            'doctor_id'         => $request->doctor,
+            'name'              => $request->name,
+            'mobile'            => $request->mobile,
+            'age'               => $request->age,
+            'vat_amount'        => $request->vat_amount,
+            'total_amount'      => $request->total,
+            'discount_amount'   => $request->discount_amount,
+            'paid_amount'       => $request->paid_amount,
+            'due_amount'        => $request->due
+        ]);
+
+        $patient->tests()->sync($request->input('test'));
+
+        notify()->success('Patient Updated');
+        return redirect()->route('app.pathology.patient.index');
     }
 
     /**
