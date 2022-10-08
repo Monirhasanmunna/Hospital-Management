@@ -173,7 +173,7 @@
                                             </div>
 
                                             <div class="col-sm-5 ml-auto" style="padding: 0 !important;">
-                                                <a href="" class="btn btn-sm btn-success float-right"><i
+                                                <a href="{{route('app.pathology.patient.index')}}" class="btn btn-sm btn-success float-right"><i
                                                         class="fa fa-list"></i>
                                                     List</a>
                                             </div>
@@ -277,6 +277,18 @@
 
         var paid_amount = $('#paid_amount').val();
         $('#due').val(total-paid_amount);
+
+
+        //error message for paid amount
+        if(total < paid_amount){
+          iziToast.show({
+              title: 'Sorry',
+              message: 'Can not paid more than total amount',
+              position: 'topRight',
+              color: 'red', // blue, red, green, yellow
+          });
+        }
+
       }
 
       $("#vat,#paid_amount").on('change keyup',function(){

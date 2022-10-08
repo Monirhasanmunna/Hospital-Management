@@ -277,7 +277,9 @@
 
 
   <script>
+    // Test input array
     var tests = [];
+
     function editPatient(id){
       $.ajax({
         url       : '/app/pathology/patient/patient/'+id,
@@ -356,9 +358,10 @@
         });
       });
 
+
     //Delete Tr
     $(document).on('click','.delete-tr',function(e){
-      
+
           e.preventDefault();
            $(this).closest('tr').remove();
 
@@ -367,69 +370,69 @@
            tests = tests.filter(item => item !== tests_id);
            $('#set_inputs').val(tests);
 
-          calculation();
+           calculation();
       });
 
   
-  //Calculation function
-  function calculation(){
+    //Calculation function
+    function calculation(){
 
-      var invoice_total = 0;
-      var discount_total = 0;
+        var invoice_total = 0;
+        var discount_total = 0;
 
-      //standard rate total calculation 
-      $('.standard_rate').each(function(index,item){
-        let sub_total = $(item).val();
-        invoice_total += parseInt(sub_total);
-      });
+        //standard rate total calculation 
+        $('.standard_rate').each(function(index,item){
+          let sub_total = $(item).val();
+          invoice_total += parseInt(sub_total);
+        });
 
-      $('#invoice_total').val(invoice_total);
-
-
-      //discount amount calculation 
-      $('.discountamount').each(function(index,item){
-        let sub_discount_amount = $(item).val();
-        discount_total += parseInt(sub_discount_amount);
-      });
-
-      $('#discount_amount').val(discount_total);
+        $('#invoice_total').val(invoice_total);
 
 
-      //vat and total count
+        //discount amount calculation 
+        $('.discountamount').each(function(index,item){
+          let sub_discount_amount = $(item).val();
+          discount_total += parseInt(sub_discount_amount);
+        });
+
+        $('#discount_amount').val(discount_total);
+
+
+        //vat and total count
+        var subtotal        =  parseInt($('#invoice_total').val());
+        var vat             =  parseInt($('#vatAmount').val());
+        var discount_amount =  parseInt($('#discount_amount').val());
+        var total           =  (subtotal+vat)-discount_amount;
+        $("#total").val(total);
+        
+        var paid_amount = $('#paid_amount').val();
+        $('#due').val(total-paid_amount);
+    }
+
+    
+    function vatCalculation(){
+      
+      var subtotal =  $('#invoice_total').val();
+      var vat      = $('#vat').val();
+      var vat_amount = parseInt((subtotal/100)*vat);
+      $('#vatAmount').val(vat_amount);
+
       var subtotal        =  parseInt($('#invoice_total').val());
       var vat             =  parseInt($('#vatAmount').val());
       var discount_amount =  parseInt($('#discount_amount').val());
       var total           =  (subtotal+vat)-discount_amount;
       $("#total").val(total);
-      
+
       var paid_amount = $('#paid_amount').val();
       $('#due').val(total-paid_amount);
-  }
 
-  
-  function vatCalculation(){
-    
-    var subtotal =  $('#invoice_total').val();
-    var vat      = $('#vat').val();
-    var vat_amount = parseInt((subtotal/100)*vat);
-    $('#vatAmount').val(vat_amount);
-
-    var subtotal        =  parseInt($('#invoice_total').val());
-    var vat             =  parseInt($('#vatAmount').val());
-    var discount_amount =  parseInt($('#discount_amount').val());
-    var total           =  (subtotal+vat)-discount_amount;
-    $("#total").val(total);
-
-    var paid_amount = $('#paid_amount').val();
-    $('#due').val(total-paid_amount);
-
-  }
+    }
 
 
-  $("#vat,#paid_amount,.delete-tr").on('change keyup',function(){
-      calculation();
-      vatCalculation();
-  });
+    $("#vat,#paid_amount,.delete-tr").on('change keyup',function(){
+        calculation();
+        vatCalculation();
+    });
 
 
 

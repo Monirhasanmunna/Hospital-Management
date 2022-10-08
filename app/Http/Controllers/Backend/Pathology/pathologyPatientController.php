@@ -71,35 +71,38 @@ class pathologyPatientController extends Controller
             'due'               => 'sometimes'
         ]);
 
-        // return $request->all();
+        if($request->total < $request->paid_amount){
+            notify()->warning('Can not paid more than total amount');
+            return redirect()->back();
+        }else{
+            $patient = pathologyPatient::create([
+                'referral_id'       => $request->referral,
+                'doctor_id'         => $request->doctor,
+                'name'              => $request->name,
+                'mobile'            => $request->mobile,
+                'age'               => $request->age,
+                'vat_amount'        => $request->vat_amount,
+                'total_amount'      => $request->total,
+                'discount_amount'   => $request->discount_amount,
+                'paid_amount'       => $request->paid_amount,
+                'due_amount'        => $request->due
+            ]);
 
-       $patient = pathologyPatient::create([
-            'referral_id'       => $request->referral,
-            'doctor_id'         => $request->doctor,
-            'name'              => $request->name,
-            'mobile'            => $request->mobile,
-            'age'               => $request->age,
-            'vat_amount'        => $request->vat_amount,
-            'total_amount'      => $request->total,
-            'discount_amount'   => $request->discount_amount,
-            'paid_amount'       => $request->paid_amount,
-            'due_amount'        => $request->due
-        ]);
 
-        
-        $stringSplit = str_split($request->set_input);
-        $removeComas =  str_replace(',', '', $stringSplit);
- 
-        $stringToNumber = array_map(function($removeComas) {
-         return intval($removeComas);
-         },$removeComas);
+            $stringSplit = str_split($request->set_input);
+            $removeComas =  str_replace(',', '', $stringSplit);
+    
+            $stringToNumber = array_map(function($removeComas) {
+            return intval($removeComas);
+            },$removeComas);
 
-        $deleteAllZeros = array_diff($stringToNumber, array(0));
+            $deleteAllZeros = array_diff($stringToNumber, array(0));
 
-        $patient->tests()->sync($deleteAllZeros);
+            $patient->tests()->sync($deleteAllZeros);
 
-        notify()->success('Patient Created');
-        return redirect()->route('app.pathology.patient.index');
+            notify()->success('Patient Created');
+            return redirect()->route('app.pathology.patient.index');
+        }
     }
 
     /**
