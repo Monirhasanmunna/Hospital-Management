@@ -93,7 +93,7 @@ class pathologyPatientController extends Controller
         $stringToNumber = array_map(function($removeComas) {
          return intval($removeComas);
          },$removeComas);
- 
+
         $deleteAllZeros = array_diff($stringToNumber, array(0));
 
         $patient->tests()->sync($deleteAllZeros);
@@ -148,7 +148,7 @@ class pathologyPatientController extends Controller
             'age'               => 'required',
             'referral'          => 'required',
             'doctor'            => 'required',
-            'test'              => 'required',
+            'test'              => 'sometimes',
             'standard_rate'     => 'required',
             'discount_amount'   => 'sometimes',
             'vat_amount'        => 'required',
@@ -158,22 +158,32 @@ class pathologyPatientController extends Controller
             'due'               => 'sometimes'
         ]);
 
-        // return $request->all();
 
-       $patient = pathologyPatient::findOrfail($request->patiend_id)->updated([
-            'referral_id'       => $request->referral,
-            'doctor_id'         => $request->doctor,
-            'name'              => $request->name,
-            'mobile'            => $request->mobile,
-            'age'               => $request->age,
-            'vat_amount'        => $request->vat_amount,
-            'total_amount'      => $request->total,
-            'discount_amount'   => $request->discount_amount,
-            'paid_amount'       => $request->paid_amount,
-            'due_amount'        => $request->due
-        ]);
+        $stringSplit = str_split($request->set_input);
+        $removeComas =  str_replace(',', '', $stringSplit);
+    
+        $stringToNumber = array_map(function($removeComas) {
+            return intval($removeComas);
+        },$removeComas);
+            
+        $deleteAllZeros = array_diff($stringToNumber, array(0));
 
-        $patient->tests()->sync($request->input('test'));
+
+        $patient = pathologyPatient::findOrfail($request->patient_id);
+        
+        $patient->referral_id       = $request->referral;
+        $patient->doctor_id         = $request->doctor;
+        $patient->name              = $request->name;
+        $patient->mobile            = $request->mobile;
+        $patient->age               = $request->age;
+        $patient->vat_amount        = $request->vat_amount;
+        $patient->total_amount      = $request->total;
+        $patient->discount_amount   = $request->discount_amount;
+        $patient->paid_amount       = $request->paid_amount;
+        $patient->due_amount        = $request->due;
+        $patient->save();
+
+        $patient->tests()->sync($deleteAllZeros);
 
         notify()->success('Patient Updated');
         return redirect()->route('app.pathology.patient.index');

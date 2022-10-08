@@ -100,7 +100,8 @@
                                         <label for="name">Patient Name</label>
                                         <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" autofocus>
                                     </div>
-                                    <input type="number" id="patient_id" name="patient_id" hidden>
+                                    {{-- patient id from here --}}
+                                    <input type="number" id="patient_ids" name="patient_id" hidden>
                                     <div class="form-group col-4">
                                         <label for="mobile">Mobile</label>
                                         <input id="mobile" type="number"
@@ -150,10 +151,13 @@
                                   </div>
                                 </div>
 
+                                <input type="number[]" multiple='multiple' id="set_inputs" name="set_input" hidden>
+
                                 <div class="form-row">
                                   <div class="form-group col-12">
                                     <label for="test">Test</label>
-                                    <select name="test[]" id="test" class="js-example-placeholder-single js-states form-control" multiple="multiple" class="@error('test') is-invalid @enderror">
+                                    <select name="test" id="test" class="js-example-placeholder-single js-states form-control" class="@error('test') is-invalid @enderror">
+                                      <option></option>
                                       @foreach ($tests as $test)
                                          <option value="{{$test->id}}">{{$test->name}}</option>
                                       @endforeach
@@ -210,7 +214,7 @@
                                         <div></div>
                                         <input type="number" name="vat" id="vat" placeholder="%"
                                             class="form-control form-control-sm">
-                                        <input type="number" name="vat_amount" id="vat_amount" placeholder="Amount"
+                                        <input type="number" name="vat_amount" id="vatAmount" placeholder="Amount"
                                             class="form-control form-control-sm" readonly>
                                     </div>
                                     <div class="input-group mb-3">
@@ -273,19 +277,20 @@
 
 
   <script>
+    var tests = [];
     function editPatient(id){
       $.ajax({
         url       : '/app/pathology/patient/patient/'+id,
         Type      : 'GET',
         dataType  : 'json',
         success   : function(response){
-
           console.log(response);
-
-          $("#patient_id").val(response.id);
+          $("#patient_ids").val(response.id);
           $("#name").val(response.name);
           $("#mobile").val(response.mobile);
           $("#age").val(response.age);
+          $("#vatAmount").val(response.vat_amount);
+          $("#paid_amount").val(response.paid_amount);
 
           var referral = `<option selected hidden value='${response.referral.id}'>${response.referral.name}</option>`;
           $("#referral").append(referral);
@@ -294,10 +299,10 @@
 
           $('#t_body').html('');
           $('#test').val('');
+          
           $.each(response.tests,function(i,v){
-
-          let test = `<option hidden selected value='${v.id}'>${v.name}</option>`;
-          $("#test").append(test);
+            tests.push(v.id);
+            $('#set_inputs').val(tests);
 
             var t_body = `
                 <tr>
@@ -322,7 +327,11 @@
     //New option selected
     $(document).ready(function(){
         $('#test').on('change',function(){
+
          var test_id = $(this).val();
+         tests.push(test_id);
+         $('#set_inputs').val(tests);
+
           $.ajax({
             url     : '/app/pathology/patient/test/'+test_id,
             type    : 'GET',
@@ -349,24 +358,19 @@
 
     //Delete Tr
     $(document).on('click','.delete-tr',function(e){
+      
           e.preventDefault();
-          $(this).closest('tr').remove();
+           $(this).closest('tr').remove();
 
-
-          //Delete selected option 
+          //Remove selected Tests items
            var tests_id = parseInt($(this).closest('tr').find('.tests_id').html());
-           var selected_items  = $("#test").val();
+           tests = tests.filter(item => item !== tests_id);
+           $('#set_inputs').val(tests);
 
-          $.each(selected_items,function(index,value){
-            if(tests_id == value){
-              let id = tests_id;
-              $("#test").find(":selected[value="+id+"]").remove();
-            }
-          });
-           
           calculation();
       });
 
+  
   //Calculation function
   function calculation(){
 
@@ -392,21 +396,39 @@
 
 
       //vat and total count
-      var subtotal =  $('#invoice_total').val();
-      var vat      = $('#vat').val();
-      var discount_amount = $('#discount_amount').val();
-
-      var total = (parseInt(subtotal)+parseInt(subtotal/100)*vat)-parseInt(discount_amount);
-      $('#total').val(total);
-      $('#vat_amount').val(parseInt(subtotal/100)*vat);
-
-
+      var subtotal        =  parseInt($('#invoice_total').val());
+      var vat             =  parseInt($('#vatAmount').val());
+      var discount_amount =  parseInt($('#discount_amount').val());
+      var total           =  (subtotal+vat)-discount_amount;
+      $("#total").val(total);
+      
       var paid_amount = $('#paid_amount').val();
       $('#due').val(total-paid_amount);
   }
 
-  $("#vat,#paid_amount").on('change keyup',function(){
+  
+  function vatCalculation(){
+    
+    var subtotal =  $('#invoice_total').val();
+    var vat      = $('#vat').val();
+    var vat_amount = parseInt((subtotal/100)*vat);
+    $('#vatAmount').val(vat_amount);
+
+    var subtotal        =  parseInt($('#invoice_total').val());
+    var vat             =  parseInt($('#vatAmount').val());
+    var discount_amount =  parseInt($('#discount_amount').val());
+    var total           =  (subtotal+vat)-discount_amount;
+    $("#total").val(total);
+
+    var paid_amount = $('#paid_amount').val();
+    $('#due').val(total-paid_amount);
+
+  }
+
+
+  $("#vat,#paid_amount,.delete-tr").on('change keyup',function(){
       calculation();
+      vatCalculation();
   });
 
 

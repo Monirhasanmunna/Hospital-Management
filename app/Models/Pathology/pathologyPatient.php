@@ -23,6 +23,6 @@ class pathologyPatient extends Model
 
     public function tests()
     {
-        return $this->belongsToMany(pathologyTest::class,'patient_test');
+        return $this->belongsToMany(pathologyTest::class,'patient_test','pathology_patient_id','pathology_test_id');
     }
 }
