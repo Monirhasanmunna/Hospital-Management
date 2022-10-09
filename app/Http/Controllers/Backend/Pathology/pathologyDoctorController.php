@@ -39,12 +39,14 @@ class pathologyDoctorController extends Controller
     {
         $request->validate([
             'name'  => 'required',
-            'title' => 'required'
+            'title' => 'required',
+            'mobile' => 'required|min:10'
         ]);
 
         pathologyDoctor::create([
             'name'  => $request->name,
-            'title' => $request->title
+            'title' => $request->title,
+            'mobile' => $request->mobile
         ]);
 
         notify()->success('Doctor Created');

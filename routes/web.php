@@ -106,6 +106,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/create',[pathologyPatientController::class,'create'])->name('create');
         Route::post('/store',[pathologyPatientController::class,'store'])->name('store');
         Route::get('/edit/{id}',[pathologyPatientController::class,'edit'])->name('edit');
+        Route::get('/invoice/{id}',[pathologyPatientController::class,'invoice'])->name('invoice');
         Route::post('/update/{id}',[pathologyPatientController::class,'update'])->name('update');
         Route::get('/delete/{id}',[pathologyPatientController::class,'destroy'])->name('delete');
         

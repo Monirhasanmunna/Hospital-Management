@@ -27,8 +27,10 @@
                       <th>Refd</th>
                       <th>Doctor</th>
                       <th>Test</th>
-                      <th>Vat</th>
-                      <th>Discount</th>
+                      <th>tax(%)</th>
+                      <th>tax Amount</th>
+                      <th>Discount(%)</th>
+                      <th>Discount Amount</th>
                       <th>Total</th>
                       <th>Paid</th>
                       <th>Due</th>
@@ -49,7 +51,9 @@
                           <span class="badge badge-primary">{{$test->name}}</span>
                         @endforeach
                       </td>
-                      <td>{{$patient->vat_amount}}</td>
+                      <td>{{$patient->tax}}%</td>
+                      <td>{{$patient->tax_amount}}</td>
+                      <td>{{$patient->discount}}%</td>
                       <td>{{$patient->discount_amount}}</td>
                       <td>{{$patient->total_amount}}</td>
                       <td>{{$patient->paid_amount}}</td>
@@ -62,6 +66,7 @@
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item"  onclick="editPatient({{$patient->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
                             <a class="dropdown-item"  onclick = 'deletePatient({{$patient->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
+                            <a class="dropdown-item"  href="{{route('app.pathology.patient.invoice',[$patient->id])}}"><i class="fa-sharp fa-solid fa-file-lines"></i></i>Parint Invoice</a>
                           </div>
                         </div>
                       </td>
@@ -123,10 +128,11 @@
                                   <div class="form-group col-6">
                                     <label for="referral">Referral</label>
                                     <select name="referral" id="referral" class="js-example-placeholder-single js-states form-control" class="@error('referral') is-invalid @enderror">
-                                      <option></option>
                                       @if(isset($referrals))
                                       @foreach ($referrals as $referral)
-                                         <option value="{{$referral->id}}">{{$referral->name}}</option>
+                                         <option value="{{$referral->id}}"
+                                          {{($patient->referral->id == $referral->id)? 'selected' : ''}}
+                                          >{{$referral->name}}</option>
                                       @endforeach
                                       @endif
                                     </select>
@@ -138,12 +144,11 @@
                                   <div class="form-group col-6">
                                     <label for="doctor">Doctor</label>
                                     <select name="doctor" id="doctor" class="js-example-placeholder-single js-states form-control" class="@error('doctor') is-invalid @enderror">
-                                      <option></option>
-                                      @if(isset($doctors))
                                       @foreach ($doctors as $doctor)
-                                         <option value="{{$doctor->id}}">{{$doctor->name}}</option>
+                                         <option value="{{$doctor->id}}"
+                                          {{($patient->doctor->id == $doctor->id)? 'selected' : ''}}
+                                          >{{$doctor->name}}</option>
                                       @endforeach
-                                      @endif
                                     </select>
                                     @error('doctor')
                                       <div class="text-danger">{{ $message }}</div>
@@ -176,8 +181,6 @@
                                                     <th>#</th>
                                                     <th>Name</th>
                                                     <th>Rate</th>
-                                                    <th>Discount (%)</th>
-                                                    <th>Discount Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -201,27 +204,30 @@
                                             class="form-control form-control-sm" readonly>
                                     </div>
                                     <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><small>Discount Amount</small></span>
-                                        </div>
-                                        <input name="discount_amount" type="number" step="any" id="discount_amount"
-                                            class="form-control form-control-sm" readonly>
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text"><small>Discount</small></span>
+                                      </div>
+                                      <div></div>
+                                      <input type="number" name="discount" id="discount" placeholder="%"
+                                          class="form-control form-control-sm">
+                                      <input name="discount_amount" type="number" step="any" placeholder="Amount" id="discount_amount"
+                                          class="form-control form-control-sm" readonly>
+                                  </div>
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style=""><small>Tax (%)</small></span>
                                     </div>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" style=""><small>Vat (%)</small></span>
-                                        </div>
-                                        <div></div>
-                                        <input type="number" name="vat" id="vat" placeholder="%"
-                                            class="form-control form-control-sm">
-                                        <input type="number" name="vat_amount" id="vatAmount" placeholder="Amount"
-                                            class="form-control form-control-sm" readonly>
-                                    </div>
+                                    <div></div>
+                                    <input type="number" name="tax" id="tax" placeholder="%"
+                                        class="form-control form-control-sm">
+                                    <input type="number" name="tax_amount" id="tax_amount" placeholder="Amount"
+                                        class="form-control form-control-sm" readonly>
+                                </div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><small>Total</small></span>
                                         </div>
-                                        <input type="number" name="total" id="total"
+                                        <input type="number" name="total" id="total_amount"
                                             class="form-control form-control-sm" readonly>
                                     </div>
                                     <div class="input-group mb-3">
@@ -235,7 +241,7 @@
                                       <div class="input-group-prepend">
                                           <span class="input-group-text"><small>Due</small></span>
                                       </div>
-                                      <input type="number" id="due" name="due"
+                                      <input type="number" id="due_amount" name="due"
                                           class="form-control form-control-sm" readonly>
                                   </div>
                                     <div class="row px-3 mt-4">
@@ -279,7 +285,6 @@
   <script>
     // Test input array
     var tests = [];
-
     function editPatient(id){
       $.ajax({
         url       : '/app/pathology/patient/patient/'+id,
@@ -291,13 +296,12 @@
           $("#name").val(response.name);
           $("#mobile").val(response.mobile);
           $("#age").val(response.age);
-          $("#vatAmount").val(response.vat_amount);
+          $("#invoice_total").val(response.invoice_total);
           $("#paid_amount").val(response.paid_amount);
-
-          var referral = `<option selected hidden value='${response.referral.id}'>${response.referral.name}</option>`;
-          $("#referral").append(referral);
-          var doctor = `<option selected hidden value='${response.doctor.id}'>${response.doctor.name}</option>`;
-          $("#doctor").append(doctor);
+          $("#discount").val(response.discount);
+          $("#discount_amount").val(response.discount_amount);
+          $("#tax").val(response.tax);
+          $("#tax_amount").val(response.tax_amount);
 
           $('#t_body').html('');
           $('#test').val('');
@@ -314,8 +318,6 @@
                   <td>
                     <input type='text' class="form-control form-control-sm standard_rate" value='${v.standard_rate}' name='standard_rate' readonly></input>
                   </td>
-                  <td>${v.refd_percent}</td>
-                  <td><input type='text' class="form-control form-control-sm discountamount" value='${v.refd_amount}' name='discount_amount' readonly></input></td>
                   <td><a href="" class=" btn-danger btn-sm delete-tr"><i class="fa fa-trash"></i></a></td>
                 </tr>
               `;
@@ -361,16 +363,16 @@
 
     //Delete Tr
     $(document).on('click','.delete-tr',function(e){
+        e.preventDefault();
+        $(this).closest('tr').remove();
 
-          e.preventDefault();
-           $(this).closest('tr').remove();
+        
+        //Remove selected Tests items
+        var tests_id = parseInt($(this).closest('tr').find('.tests_id').html());
+        tests = tests.filter(item => item !== tests_id);
+        $('#set_inputs').val(tests);
 
-          //Remove selected Tests items
-           var tests_id = parseInt($(this).closest('tr').find('.tests_id').html());
-           tests = tests.filter(item => item !== tests_id);
-           $('#set_inputs').val(tests);
-
-           calculation();
+        calculation();
       });
 
   
@@ -389,38 +391,42 @@
         $('#invoice_total').val(invoice_total);
 
 
-        //discount amount calculation 
-        $('.discountamount').each(function(index,item){
-          let sub_discount_amount = $(item).val();
-          discount_total += parseInt(sub_discount_amount);
-        });
-
-        $('#discount_amount').val(discount_total);
+         //discount calculation 
+         var disc = $("#discount").val();
+         var disc_amount = (invoice_total/100)*disc;
+         $('#discount_amount').val(disc_amount);
 
 
-        //vat and total count
-        var subtotal        =  parseInt($('#invoice_total').val());
-        var vat             =  parseInt($('#vatAmount').val());
-        var discount_amount =  parseInt($('#discount_amount').val());
-        var total           =  (subtotal+vat)-discount_amount;
-        $("#total").val(total);
-        
-        var paid_amount = $('#paid_amount').val();
-        $('#due').val(total-paid_amount);
+        //tax calculation 
+        var tax = $("#tax").val();
+        var tax_amount = (invoice_total/100)*tax;
+        $('#tax_amount').val(tax_amount);
+
+
+        //net total calculation
+        var invoice_total   = parseInt($('#invoice_total').val());
+        var discount_amount = parseInt($("#discount_amount").val());
+        var tax_amount      = parseInt($("#tax_amount").val());
+        $("#total_amount").val((invoice_total+tax_amount)-discount_amount);
+
+
+        var paid_amount   = $('#paid_amount').val();
+        var total_amount  = $("#total_amount").val();
+        $('#due_amount').val(total_amount-paid_amount);
     }
 
     
-    function vatCalculation(){
+    function taxCalculation(){
       
       var subtotal =  $('#invoice_total').val();
-      var vat      = $('#vat').val();
-      var vat_amount = parseInt((subtotal/100)*vat);
-      $('#vatAmount').val(vat_amount);
+      var tax      = $('#tax').val();
+      var tax_amount = parseInt((subtotal/100)*tax);
+      $('#taxAmount').val(tax_amount);
 
       var subtotal        =  parseInt($('#invoice_total').val());
-      var vat             =  parseInt($('#vatAmount').val());
+      var tax             =  parseInt($('#taxAmount').val());
       var discount_amount =  parseInt($('#discount_amount').val());
-      var total           =  (subtotal+vat)-discount_amount;
+      var total           =  (subtotal+tax)-discount_amount;
       $("#total").val(total);
 
       var paid_amount = $('#paid_amount').val();
@@ -429,9 +435,9 @@
     }
 
 
-    $("#vat,#paid_amount,.delete-tr").on('change keyup',function(){
+    $("#tax,#paid_amount,.delete-tr,#discounts,#tax").on('change keyup',function(){
         calculation();
-        vatCalculation();
+        taxCalculation();
     });
 
 

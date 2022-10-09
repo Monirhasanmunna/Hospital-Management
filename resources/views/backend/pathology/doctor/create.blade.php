@@ -30,6 +30,13 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                       </div>
+                      <div class="form-group">
+                        <label for="mobile">Mobile</label>
+                        <input type="number" class="form-control" name="mobile" id="mobile" class="@error('mobile') is-invalid @enderror">
+                        @error('mobile')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                      </div>
                       <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                   </div>

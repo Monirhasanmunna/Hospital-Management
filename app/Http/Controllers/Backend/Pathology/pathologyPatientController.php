@@ -21,7 +21,9 @@ class pathologyPatientController extends Controller
     {
         $patients = pathologyPatient::orderBy('id','DESC')->get();
         $tests = pathologyTest::all();
-        return view('backend.pathology.patient.index',compact('patients','tests'));
+        $referrals = pathologyReferral::all();
+        $doctors = pathologyDoctor::all();
+        return view('backend.pathology.patient.index',compact('patients','tests','referrals','doctors'));
     }
 
     /**
@@ -62,9 +64,11 @@ class pathologyPatientController extends Controller
             'referral'          => 'required',
             'doctor'            => 'required',
             'test'              => 'required',
-            'standard_rate'     => 'required',
+            'invoice_total'     => 'invoice_total',
+            'discount'          => 'sometimes',
             'discount_amount'   => 'sometimes',
-            'vat_amount'        => 'required',
+            'tax'               => 'sometimes',
+            'tax_amount'        => 'sometimes',
             'invoice_total'     => 'required',
             'total'             => 'required',
             'paid_amount'       => 'required',
@@ -81,8 +85,12 @@ class pathologyPatientController extends Controller
                 'name'              => $request->name,
                 'mobile'            => $request->mobile,
                 'age'               => $request->age,
-                'vat_amount'        => $request->vat_amount,
+                'invoice_total'     => $request->invoice_total,
+                'address'           => $request->address,
+                'tax'               => $request->tax,
+                'tax_amount'        => $request->tax_amount,
                 'total_amount'      => $request->total,
+                'discount'          => $request->discount,
                 'discount_amount'   => $request->discount_amount,
                 'paid_amount'       => $request->paid_amount,
                 'due_amount'        => $request->due
@@ -116,6 +124,13 @@ class pathologyPatientController extends Controller
         //
     }
 
+
+    public function invoice($id)
+    {
+        $patient = pathologyPatient::with('tests')->findOrfail($id);
+        return view('backend.pathology.patient.invoice',compact('patient'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -125,9 +140,7 @@ class pathologyPatientController extends Controller
     public function edit($id)
     {
         $patient = pathologyPatient::with('tests')->findOrfail($id);
-        $referrals = pathologyReferral::all();
-        $doctors = pathologyDoctor::all();
-        return view('backend.pathology.patient.index',compact('patient','referrals','doctors'));
+        return view('backend.pathology.patient.index',compact('patient'));
     }
 
     public function patientInfoById($id)
@@ -154,42 +167,46 @@ class pathologyPatientController extends Controller
             'test'              => 'sometimes',
             'standard_rate'     => 'required',
             'discount_amount'   => 'sometimes',
-            'vat_amount'        => 'required',
+            'tax_amount'        => 'required',
             'invoice_total'     => 'required',
             'total'             => 'required',
             'paid_amount'       => 'required',
             'due'               => 'sometimes'
         ]);
 
-
-        $stringSplit = str_split($request->set_input);
-        $removeComas =  str_replace(',', '', $stringSplit);
-    
-        $stringToNumber = array_map(function($removeComas) {
-            return intval($removeComas);
-        },$removeComas);
-            
-        $deleteAllZeros = array_diff($stringToNumber, array(0));
-
-
-        $patient = pathologyPatient::findOrfail($request->patient_id);
+        if($request->total < $request->paid_amount){
+            notify()->warning('Can not paid more than total amount');
+            return redirect()->back();
+        }else{
+            $stringSplit = str_split($request->set_input);
+            $removeComas =  str_replace(',', '', $stringSplit);
         
-        $patient->referral_id       = $request->referral;
-        $patient->doctor_id         = $request->doctor;
-        $patient->name              = $request->name;
-        $patient->mobile            = $request->mobile;
-        $patient->age               = $request->age;
-        $patient->vat_amount        = $request->vat_amount;
-        $patient->total_amount      = $request->total;
-        $patient->discount_amount   = $request->discount_amount;
-        $patient->paid_amount       = $request->paid_amount;
-        $patient->due_amount        = $request->due;
-        $patient->save();
+            $stringToNumber = array_map(function($removeComas) {
+                return intval($removeComas);
+            },$removeComas);
+                
+            $deleteAllZeros = array_diff($stringToNumber, array(0));
 
-        $patient->tests()->sync($deleteAllZeros);
 
-        notify()->success('Patient Updated');
-        return redirect()->route('app.pathology.patient.index');
+            $patient = pathologyPatient::findOrfail($request->patient_id);
+            
+            $patient->referral_id       = $request->referral;
+            $patient->doctor_id         = $request->doctor;
+            $patient->name              = $request->name;
+            $patient->mobile            = $request->mobile;
+            $patient->age               = $request->age;
+            $patient->tax_amount        = $request->tax_amount;
+            $patient->total_amount      = $request->total;
+            $patient->discount_amount   = $request->discount_amount;
+            $patient->paid_amount       = $request->paid_amount;
+            $patient->due_amount        = $request->due;
+            $patient->save();
+
+            $patient->tests()->sync($deleteAllZeros);
+
+            notify()->success('Patient Updated');
+            return redirect()->route('app.pathology.patient.index');
+        }
     }
 
     /**

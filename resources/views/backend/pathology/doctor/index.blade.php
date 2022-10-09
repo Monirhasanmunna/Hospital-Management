@@ -23,6 +23,7 @@
                       <th>SL</th>
                       <th>Name</th>
                       <th>Title</th>
+                      <th>Mobile</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -32,6 +33,7 @@
                       <td>{{$key+1}}</td>
                       <td>{{$doctor->name}}</td>
                       <td>{{$doctor->title}}</td>
+                      <td>+880 {{$doctor->mobile}}</td>
                       <td>
                         <div class="dropdown">
                           <button class="btn btn-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

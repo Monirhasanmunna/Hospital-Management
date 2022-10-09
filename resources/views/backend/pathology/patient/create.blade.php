@@ -27,12 +27,11 @@
                         <div class="row">
                             <div class="col-md-9 float-left">
                                 <div class="card-body px-0">
-
+                                  <div class="form-group">
+                                    <label for="name">Patient Name</label>
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" autofocus>
+                                  </div>
                                     <div class="form-row">
-                                        <div class="form-group col-6">
-                                            <label for="name">Patient Name</label>
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" autofocus>
-                                        </div>
                                         <div class="form-group col-4">
                                             <label for="mobile">Mobile</label>
                                             <input id="mobile" type="number"
@@ -44,10 +43,14 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group col-2">
+                                        <div class="form-group col-3">
                                           <label for="age">Age</label>
                                           <input id="age" type="number" class="form-control @error('name') is-invalid @enderror" name="age" autofocus>
                                       </div>
+                                      <div class="form-group col-5">
+                                        <label for="address">Address</label>
+                                        <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" autofocus>
+                                    </div>
                                     </div>
 
                                     <div class="form-row">
@@ -103,8 +106,6 @@
                                                         <th>#</th>
                                                         <th>Name</th>
                                                         <th>Rate</th>
-                                                        <th>Discount (%)</th>
-                                                        <th>Discount Amount</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
@@ -129,19 +130,22 @@
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text"><small>Discount Amount</small></span>
+                                                <span class="input-group-text"><small>Discount</small></span>
                                             </div>
-                                            <input name="discount_amount" type="number" step="any" id="discount_amount"
+                                            <div></div>
+                                            <input type="number" name="discount" id="discount" placeholder="%"
+                                                class="form-control form-control-sm">
+                                            <input name="discount_amount" type="number" step="any" placeholder="Amount" id="discount_amount"
                                                 class="form-control form-control-sm" readonly>
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" style=""><small>Vat (%)</small></span>
+                                                <span class="input-group-text" style=""><small>Tax (%)</small></span>
                                             </div>
                                             <div></div>
-                                            <input type="number" name="vat" id="vat" placeholder="%"
+                                            <input type="number" name="tax" id="tax" placeholder="%"
                                                 class="form-control form-control-sm">
-                                            <input type="number" name="vat_amount" id="vat_amount" placeholder="Amount"
+                                            <input type="number" name="tax_amount" id="tax_amount" placeholder="Amount"
                                                 class="form-control form-control-sm" readonly>
                                         </div>
                                         <div class="input-group mb-3">
@@ -219,10 +223,8 @@
                           <td class='sl_no'>${'#'}</td>
                           <td>${response.name}</td>
                           <td>
-                            <input type='text' class="form-control form-control-sm standard_rate" value='${response.standard_rate}' name='standard_rate' readonly></input>
+                            <input type='text' class="form-control form-control-sm standard_rate" value='${response.standard_rate}' readonly></input>
                           </td>
-                          <td>${response.refd_percent}</td>
-                          <td><input type='text' class="form-control form-control-sm discountamount" value='${response.refd_amount}' name='discount_amount' readonly></input></td>
                           <td><a href="" class=" btn-danger btn-sm delete-tr"><i class="fa fa-trash"></i></a></td>
                         </tr>
                       `;
@@ -243,36 +245,33 @@
       
       function calculation(){
 
-        var invoice_total = 0;
+        var invoice_total  = 0;
         var discount_total = 0;
 
         //standard rate total calculation 
         $('.standard_rate').each(function(index,item){
-          let sub_total = $(item).val();
+          let sub_total  = $(item).val();
           invoice_total += parseInt(sub_total);
         });
 
         $('#invoice_total').val(invoice_total);
 
 
-        //discount amount calculation 
-        $('.discountamount').each(function(index,item){
-          let sub_discount_amount = $(item).val();
-          discount_total += parseInt(sub_discount_amount);
-        });
-
-        $('#discount_amount').val(discount_total);
+        //discount calculation
+        var disc = $("#discount").val();
+        var disc_amount = (invoice_total/100)*disc;
+        $('#discount_amount').val(disc_amount);
 
 
-        //vat and total count
-        var subtotal =  $('#invoice_total').val();
-        var vat      = $('#vat').val();
-        var discount_amount = $('#discount_amount').val();
+        //tax and total count
+        var subtotal        =  $('#invoice_total').val();
+        var tax             =  $('#tax').val();
+        var discount_amount =  $('#discount_amount').val();
 
 
-        var total = (parseInt(subtotal)+parseInt(subtotal/100)*vat)-parseInt(discount_amount);
+        var total = (parseInt(subtotal)+parseInt(subtotal/100)*tax)-parseInt(discount_amount);
         $('#total').val(total);
-        $('#vat_amount').val(parseInt(subtotal/100)*vat);
+        $('#tax_amount').val(parseInt(subtotal/100)*tax);
 
 
         var paid_amount = $('#paid_amount').val();
@@ -291,7 +290,7 @@
 
       }
 
-      $("#vat,#paid_amount").on('change keyup',function(){
+      $("#tax,#paid_amount,#discount").on('change keyup',function(){
         calculation();
       });
     </script>

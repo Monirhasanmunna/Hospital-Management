@@ -20,11 +20,15 @@ return new class extends Migration
             $table->string('name');
             $table->string('mobile');
             $table->integer('age');
-            $table->integer('vat_amount');
+            $table->bigInteger('invoice_total');
+            $table->bigInteger('tax')->nullable();
+            $table->bigInteger('tax_amount')->nullable();
             $table->bigInteger('total_amount');
-            $table->bigInteger('discount_amount');
+            $table->bigInteger('discount')->nullable();
+            $table->bigInteger('discount_amount')->nullable();
             $table->bigInteger('paid_amount');
-            $table->bigInteger('due_amount');
+            $table->bigInteger('due_amount')->nullable();
+            $table->string('address');
             $table->timestamps();
         });
     }
