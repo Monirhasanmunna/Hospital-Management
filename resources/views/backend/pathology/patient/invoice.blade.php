@@ -11,6 +11,12 @@
   <!-- Site Title -->
   <title>Medical Invoice</title>
   <link rel="stylesheet" href="{{asset('backend/invoice/css/style.css')}}">
+  
+  <style>
+    .page-break {
+     page-break-after: always;
+   }
+   </style>
 </head>
 <body>
   <div class="tm_container">
@@ -130,7 +136,7 @@
           </div>
         </div>
       </div>
-      <div class="tm_invoice_btns tm_hide_print">
+      {{-- <div class="tm_invoice_btns tm_hide_print">
         <a href="javascript:window.print()" class="tm_invoice_btn tm_color1">
           <span class="tm_btn_icon">
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="392" cy="184" r="24" fill='currentColor'/></svg>
@@ -143,15 +149,13 @@
           </span>
           <span class="tm_btn_text">Download</span>
         </button>
-      </div>
+      </div> --}}
     </div>
   </div>
   <script src="{{asset('backend/invoice/js/jquery.min.js')}}"></script>
   <script src="{{asset('backend/invoice/js/jspdf.min.js')}}"></script>
   <script src="{{asset('backend/invoice/js/html2canvas.min.js')}}"></script>
   <script src="{{asset('backend/invoice/js/main.js')}}"></script>
-
-
 
 </body>
 </html>

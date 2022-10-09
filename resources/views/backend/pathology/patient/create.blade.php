@@ -81,7 +81,7 @@
                                       </div>
                                     </div>
 
-                                    <input type="number[]" multiple='multiple' id="set_input" name="set_input" hidden>
+                                    <input type="number[]" multiple='multiple' id="set_inputs" name="set_input" hidden>
 
                                     <div class="form-row">
                                       <div class="form-group col-12">
@@ -206,20 +206,23 @@
 </script>
 
     <script>
+      var tests = [];
       $(document).ready(function(){
-        var tests = [];
-        $('#test').on('change',function(){
-        var id = $(this).val();
         
+        $('#test').on('change',function(){
+
+        var id = $(this).val();
         tests.push(id);
-        $('#set_input').val(tests);
+        $('#set_inputs').val(tests);
           
           $.ajax({
             url     : '/app/pathology/patient/test/'+id,
             type    : 'GET',
             success : function(response){
+              console.log(response);
               $data = `
                         <tr>
+                          <td class='tests_id' hidden >${response.id}</td>
                           <td class='sl_no'>${'#'}</td>
                           <td>${response.name}</td>
                           <td>
@@ -237,9 +240,18 @@
 
       //Delete Tr
       $(document).on('click','.delete-tr',function(e){
-            e.preventDefault();
-            $(this).closest('tr').remove();
-            calculation();
+              e.preventDefault();
+              $(this).closest('tr').remove();
+
+              var item = $("#set_inputs").val();
+              var tests = item.split(',').map(Number);
+
+             //Remove selected Tests items
+              var tests_id = parseInt($(this).closest('tr').find('.tests_id').html());
+              tests = tests.filter(item => item !== tests_id);
+              $('#set_inputs').val(tests);
+
+              calculation();
       });
 
       
@@ -277,9 +289,15 @@
         var paid_amount = $('#paid_amount').val();
         $('#due').val(total-paid_amount);
 
+      }
 
+      $("#tax,#paid_amount,#discount").on('change keyup',function(){
+        calculation();
+
+        var total_amount = parseInt($('#total').val());
+        var paid_amount  = parseInt($('#paid_amount').val());
         //error message for paid amount
-        if(total < paid_amount){
+        if(total_amount < paid_amount){
           iziToast.show({
               title: 'Sorry',
               message: 'Can not paid more than total amount',
@@ -287,11 +305,6 @@
               color: 'red', // blue, red, green, yellow
           });
         }
-
-      }
-
-      $("#tax,#paid_amount,#discount").on('change keyup',function(){
-        calculation();
       });
     </script>
 @endpush

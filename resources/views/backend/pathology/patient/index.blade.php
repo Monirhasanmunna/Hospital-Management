@@ -27,8 +27,8 @@
                       <th>Refd</th>
                       <th>Doctor</th>
                       <th>Test</th>
-                      <th>tax(%)</th>
-                      <th>tax Amount</th>
+                      <th>Tax(%)</th>
+                      <th>Tax Amount</th>
                       <th>Discount(%)</th>
                       <th>Discount Amount</th>
                       <th>Total</th>
@@ -66,7 +66,7 @@
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item"  onclick="editPatient({{$patient->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
                             <a class="dropdown-item"  onclick = 'deletePatient({{$patient->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
-                            <a class="dropdown-item"  href="{{route('app.pathology.patient.invoice',[$patient->id])}}"><i class="fa-sharp fa-solid fa-file-lines"></i></i>Parint Invoice</a>
+                            <a class="dropdown-item" target="_blank" href="{{route('app.pathology.patient.invoice',[$patient->id])}}"><i class="fa-sharp fa-solid fa-file-lines"></i></i>Parint Invoice</a>
                           </div>
                         </div>
                       </td>
@@ -367,6 +367,9 @@
         $(this).closest('tr').remove();
 
         
+        var item = $("#set_inputs").val();
+        var tests = item.split(',').map(Number);
+
         //Remove selected Tests items
         var tests_id = parseInt($(this).closest('tr').find('.tests_id').html());
         tests = tests.filter(item => item !== tests_id);
@@ -410,34 +413,29 @@
         $("#total_amount").val((invoice_total+tax_amount)-discount_amount);
 
 
-        var paid_amount   = $('#paid_amount').val();
-        var total_amount  = $("#total_amount").val();
+        var paid_amount   = parseInt($('#paid_amount').val());
+        var total_amount  = parseInt($("#total_amount").val());
         $('#due_amount').val(total_amount-paid_amount);
-    }
 
-    
-    function taxCalculation(){
-      
-      var subtotal =  $('#invoice_total').val();
-      var tax      = $('#tax').val();
-      var tax_amount = parseInt((subtotal/100)*tax);
-      $('#taxAmount').val(tax_amount);
-
-      var subtotal        =  parseInt($('#invoice_total').val());
-      var tax             =  parseInt($('#taxAmount').val());
-      var discount_amount =  parseInt($('#discount_amount').val());
-      var total           =  (subtotal+tax)-discount_amount;
-      $("#total").val(total);
-
-      var paid_amount = $('#paid_amount').val();
-      $('#due').val(total-paid_amount);
 
     }
 
 
     $("#tax,#paid_amount,.delete-tr,#discounts,#tax").on('change keyup',function(){
         calculation();
-        taxCalculation();
+
+        var paid_amount   = parseInt($('#paid_amount').val());
+        var total_amount  = parseInt($("#total_amount").val());
+        //error message for paid amount
+       if(total_amount < paid_amount){
+          iziToast.show({
+              title: 'Sorry',
+              message: 'Can not paid more than total amount',
+              position: 'topRight',
+              color: 'red', // blue, red, green, yellow
+          });
+        }
+
     });
 
 

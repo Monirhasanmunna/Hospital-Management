@@ -9,6 +9,8 @@ use App\Models\Pathology\pathologyReferral;
 use App\Models\Pathology\pathologyTest;
 use Faker\Core\Number;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class pathologyPatientController extends Controller
 {
@@ -128,7 +130,10 @@ class pathologyPatientController extends Controller
     public function invoice($id)
     {
         $patient = pathologyPatient::with('tests')->findOrfail($id);
-        return view('backend.pathology.patient.invoice',compact('patient'));
+
+        $pdf = PDF::loadView('backend/pathology/patient/invoice', compact('patient'));
+        return $pdf->stream();
+        //return view('backend.pathology.patient.invoice',compact('patient'));
     }
 
     /**
