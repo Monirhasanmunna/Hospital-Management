@@ -348,8 +348,6 @@
                           <td>
                             <input type='text' class="form-control form-control-sm standard_rate" value='${response.standard_rate}' name='standard_rate' readonly></input>
                           </td>
-                          <td>${response.refd_percent}</td>
-                          <td><input type='text' class="form-control form-control-sm discountamount" value='${response.refd_amount}' name='discount_amount' readonly></input></td>
                           <td><a href="" class=" btn-danger btn-sm delete-tr"><i class="fa fa-trash"></i></a></td>
                         </tr>
                       `;
