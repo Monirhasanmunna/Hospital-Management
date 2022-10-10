@@ -131,7 +131,9 @@
                                       @if(isset($referrals))
                                       @foreach ($referrals as $referral)
                                          <option value="{{$referral->id}}"
+                                          @if(isset($patient))
                                           {{($patient->referral->id == $referral->id)? 'selected' : ''}}
+                                          @endif
                                           >{{$referral->name}}</option>
                                       @endforeach
                                       @endif
@@ -146,7 +148,9 @@
                                     <select name="doctor" id="doctor" class="js-example-placeholder-single js-states form-control" class="@error('doctor') is-invalid @enderror">
                                       @foreach ($doctors as $doctor)
                                          <option value="{{$doctor->id}}"
+                                          @if(isset($patient))
                                           {{($patient->doctor->id == $doctor->id)? 'selected' : ''}}
+                                          @endif
                                           >{{$doctor->name}}</option>
                                       @endforeach
                                     </select>

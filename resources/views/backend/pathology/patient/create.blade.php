@@ -171,15 +171,19 @@
                                       </div>
                                         <div class="row px-3 mt-4">
                                             <div class="col-sm-5" style="padding: 0 !important;">
-                                                <button type="submit" class="btn btn-sm btn-primary  save-btn"><i
+                                                <button type="submit" class="btn btn-sm btn-primary  save-btn" target="_blank"><i
                                                         class="fa fa-save"></i>
                                                     Save</button>
                                             </div>
 
                                             <div class="col-sm-5 ml-auto" style="padding: 0 !important;">
-                                                <a href="{{route('app.pathology.patient.index')}}" class="btn btn-sm btn-success float-right"><i
+                                                {{-- <a href="{{route('app.pathology.patient.index')}}" class="btn btn-sm btn-success float-right"><i
                                                         class="fa fa-list"></i>
-                                                    List</a>
+                                                    List</a> --}}
+
+                                                    <a href="{{route('app.pathology.patient.index')}}" onclick="javascript:window.print();" class="btn btn-sm btn-success float-right"><i
+                                                      class="fa fa-list"></i>
+                                                  List</a>
                                             </div>
                                         </div>
                                     </div>
@@ -204,6 +208,8 @@
       allowClear: true
   });
 </script>
+
+
 
     <script>
       var tests = [];
