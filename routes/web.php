@@ -121,8 +121,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/test/{id}',[pathologyPatientController::class,'testInfoById']);
         Route::get('/patient/{id}',[pathologyPatientController::class,'patientInfoById']);
     });
-
-<<<<<<< HEAD
+    
     // Expense route section 
     Route::group(['as'=>'expense.','prefix'=>'expense','namespace'=>'Expense'],function(){
         
@@ -159,6 +158,4 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
 
     });
     
-=======
->>>>>>> e4908a6372865da147e71d21e5d44bf996f98648
 });
