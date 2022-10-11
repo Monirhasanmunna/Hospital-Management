@@ -19,7 +19,7 @@
                         <div class="form-row">
                           <div class="form-group col-6">
                             <label for="code">Code</label>
-                            <input type="number" class="form-control" readonly name="code" id="code" value="{{$referral->code+1}}" class="@error('code') is-invalid @enderror">
+                            <input type="number" class="form-control" readonly name="code" id="code" value="{{rand(0,99999)}}" class="@error('code') is-invalid @enderror">
                             @error('code')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror

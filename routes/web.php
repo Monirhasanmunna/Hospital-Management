@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\Expense\AccountController;
+use App\Http\Controllers\Backend\Expense\ExpenseCategoryController;
+use App\Http\Controllers\Backend\Expense\ExpenseController;
 use App\Http\Controllers\Backend\Pathology\PathologyCategoryController;
 use App\Http\Controllers\Backend\Pathology\pathologyDoctorController;
 use App\Http\Controllers\Backend\Pathology\pathologyPatientController;
@@ -113,6 +116,42 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         // Ajax Route
         Route::get('/test/{id}',[pathologyPatientController::class,'testInfoById']);
         Route::get('/patient/{id}',[pathologyPatientController::class,'patientInfoById']);
-        
     });
+
+    // Expense route section 
+    Route::group(['as'=>'expense.','prefix'=>'expense','namespace'=>'Expense'],function(){
+        
+        Route::get('/index',[ExpenseController::class,'index'])->name('index');
+        Route::get('/create',[ExpenseController::class,'create'])->name('create');
+        Route::post('/store',[ExpenseController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[ExpenseController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[ExpenseController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[ExpenseController::class,'destroy'])->name('delete');
+
+    });
+
+    // Expense category route
+    Route::group(['as'=>'expense_category.','prefix'=>'expense_category','namespace'=>'Expense'],function(){
+        
+        Route::get('/index',[ExpenseCategoryController::class,'index'])->name('index');
+        Route::get('/create',[ExpenseCategoryController::class,'create'])->name('create');
+        Route::post('/store',[ExpenseCategoryController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[ExpenseCategoryController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[ExpenseCategoryController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[ExpenseCategoryController::class,'destroy'])->name('delete');
+
+    });
+
+    // Account Route
+    Route::group(['as'=>'account.','prefix'=>'expense/account','namespace'=>'Expense'],function(){
+        
+        Route::get('/index',[AccountController::class,'index'])->name('index');
+        Route::get('/create',[AccountController::class,'create'])->name('create');
+        Route::post('/store',[AccountController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[AccountController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[AccountController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[AccountController::class,'destroy'])->name('delete');
+
+    });
+    
 });

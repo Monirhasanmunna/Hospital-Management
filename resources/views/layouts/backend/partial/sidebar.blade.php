@@ -68,6 +68,20 @@
       </div>
     </li>
     <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Expense-menu" aria-expanded="true"
+        aria-controls="Expense-menu">
+        <i class="fab fa-fw fa-wpforms"></i>
+        <span>Expense</span>
+      </a>
+      <div id="Expense-menu" class="collapse {{Request::is('app/expense*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item {{Request::is('app/expense/account')?'activate':''}}" href="{{ route('app.account.index') }}">Account</a>
+          <a class="collapse-item {{Request::is('app/expense/expense_category')?'activate':''}}" href="{{ route('app.expense_category.index') }}">Expense Category</a>
+          <a class="collapse-item {{Request::is('app/expense/expense')?'activate':''}}" href="{{ route('app.expense.index') }}">Expense</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ICU-menu" aria-expanded="true"
         aria-controls="IPD-menu">
         <i class="fab fa-fw fa-wpforms"></i>

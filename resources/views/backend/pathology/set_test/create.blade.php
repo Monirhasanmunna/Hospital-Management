@@ -34,7 +34,7 @@
                         
                         <div class="form-group col-md-6">
                           <label for="code">Code</label>
-                          <input type="text" class="form-control" name="code" id="code" readonly value="{{$data->code+1}}" class="@error('code') is-invalid @enderror">
+                          <input type="text" class="form-control" name="code" id="code" readonly value="{{rand(0,9999)}}" class="@error('code') is-invalid @enderror">
                           @error('code')
                             <div class="text-danger">{{ $message }}</div>
                           @enderror
