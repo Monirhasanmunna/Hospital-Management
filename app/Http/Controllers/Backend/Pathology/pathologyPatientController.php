@@ -110,8 +110,7 @@ class pathologyPatientController extends Controller
 
             $patient->tests()->sync($deleteAllZeros);
 
-            notify()->success('Patient Created');
-            return redirect()->route('app.pathology.patient.index');
+            return view('backend.pathology.patient.invoice',compact('patient')); 
         }
     }
 
@@ -130,10 +129,7 @@ class pathologyPatientController extends Controller
     public function invoice($id)
     {
         $patient = pathologyPatient::with('tests')->findOrfail($id);
-
-        $pdf = PDF::loadView('backend/pathology/patient/invoice', compact('patient'));
-        return $pdf->stream();
-        //return view('backend.pathology.patient.invoice',compact('patient'));
+        return view('backend.pathology.patient.invoice',compact('patient'));
     }
 
     /**
@@ -210,7 +206,7 @@ class pathologyPatientController extends Controller
             $patient->tests()->sync($deleteAllZeros);
 
             notify()->success('Patient Updated');
-            return redirect()->route('app.pathology.patient.index');
+            return view('backend.pathology.patient.invoice',compact('patient'));
         }
     }
 

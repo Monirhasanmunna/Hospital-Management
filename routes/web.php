@@ -37,6 +37,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/delete/{id}',[PharmacyCategoryController::class,'destroy'])->name('delete');
     });
 
+
     Route::group(['as'=>'pharmacy.supplier.','prefix'=>'pharmacy/supplier','namespace'=>'Pharmacy'],function(){
         
         Route::get('/index',[PharmacySupplierController::class,'index'])->name('index');
@@ -45,6 +46,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/edit/{id}',[PharmacySupplierController::class,'edit'])->name('edit');
         Route::put('/update/{id}',[PharmacySupplierController::class,'update'])->name('update');
         Route::get('/delete/{id}',[PharmacySupplierController::class,'destroy'])->name('delete');
+
     });
 
 
@@ -56,6 +58,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/edit/{id}',[PathologyCategoryController::class,'edit'])->name('edit');
         Route::post('/update/{id}',[PathologyCategoryController::class,'update'])->name('update');
         Route::get('/delete/{id}',[PathologyCategoryController::class,'destroy'])->name('delete');
+
     });
 
 
@@ -67,6 +70,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/edit/{id}',[PathologyUnitController::class,'edit'])->name('edit');
         Route::post('/update/{id}',[PathologyUnitController::class,'update'])->name('update');
         Route::get('/delete/{id}',[PathologyUnitController::class,'destroy'])->name('delete');
+
     });
 
 
@@ -118,6 +122,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/patient/{id}',[pathologyPatientController::class,'patientInfoById']);
     });
 
+<<<<<<< HEAD
     // Expense route section 
     Route::group(['as'=>'expense.','prefix'=>'expense','namespace'=>'Expense'],function(){
         
@@ -154,4 +159,6 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
 
     });
     
+=======
+>>>>>>> e4908a6372865da147e71d21e5d44bf996f98648
 });
