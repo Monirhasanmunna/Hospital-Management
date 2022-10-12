@@ -112,15 +112,10 @@ class pathologyPatientController extends Controller
             $deleteAllZeros = array_diff($stringToNumber, array(0));
             $patient->tests()->sync($deleteAllZeros);
 
-            //income created here
-            $income = Income::create([
-                'name'   => $request->name,
-                'amount' => $request->paid_amount,
-            ]);
 
             //accounts table credit update here
             $account = Account::where('name','Patient Service')->first();
-            $account_credited   =  $account->credit + $income->amount;
+            $account_credited   =  $account->credit + $patient->paid_amount;
             $account->credit    =  $account_credited;
             $account->balance   =  $account->credit - $account->debit;
             $account->save();
@@ -191,10 +186,10 @@ class pathologyPatientController extends Controller
             'due'               => 'sometimes'
         ]);
 
-        $income = income::findOrfail($request->patient_id);
+        $patient = pathologyPatient::findOrfail($request->patient_id);
         //accounts table credit update here
         $account = Account::find(1);;
-        $account_credited   =  $account->credit - $income->amount;
+        $account_credited   =  $account->credit - $patient->paid_amount;
         $account->credit    =  $account_credited;
         $account->balance   =  $account->credit - $account->debit;
         $account->save();
@@ -230,17 +225,10 @@ class pathologyPatientController extends Controller
             $deleteAllZeros = array_diff($stringToNumber, array(0));
             $patient->tests()->sync($deleteAllZeros);
 
-
-            //income Update here
-            $income->update([
-                'name'   => $request->name,
-                'amount' => $request->paid_amount,
-            ]);
-
             
             //accounts table credit update here
             $account            = Account::find(1);
-            $account_credited   =  $account->credit + $income->amount;
+            $account_credited   =  $account->credit + $patient->paid_amount;
             $account->credit    =  $account_credited;
             $account->balance   =  $account->credit - $account->debit;
             $account->save();
@@ -258,14 +246,13 @@ class pathologyPatientController extends Controller
      */
     public function destroy($id)
     {
-        pathologyPatient::findOrfail($id)->delete();
-
-        $income     = Income::findOrfail($id);
+        $patient = pathologyPatient::findOrfail($id);
         $account    = Account::find(1);
-        $account->credit = $account->credit - $income->amount;
+
+        $account->credit = $account->credit - $patient->paid_amount;
         $account->balance   =  $account->credit - $account->debit;
         $account->save();
-        $income->delete();
+        $patient->delete();
 
         return response('true');
     }

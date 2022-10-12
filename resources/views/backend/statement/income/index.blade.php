@@ -6,7 +6,7 @@
 @section('content')
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-gray-800">Income <a href="javascript:void(0)" class="btn btn-primary ml-3" id="AddExpense"><i class="fas fa-plus"></i>Add Expense </a></h1>
+      <h1 class="h3 mb-0 text-gray-800">Income</h1>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('app.dashboard')}}">Home</a></li>
         <li class="breadcrumb-item">Income</li>
@@ -31,7 +31,7 @@
                     <tr>
                       <td>{{$key+1}}</td>
                       <td>{{$income->name}}</td>
-                      <td>{{$income->amount}}</td>
+                      <td>{{$income->paid_amount}}</td>
                       <td>{{$income->created_at->format('d-M-Y')}}</td>
                       {{-- <td>
                         <div class="dropdown">

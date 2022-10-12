@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Income;
 
 use App\Http\Controllers\Controller;
 use App\Models\Income\Income;
+use App\Models\Pathology\pathologyPatient;
 use Illuminate\Http\Request;
 
 class incomeController extends Controller
@@ -15,7 +16,7 @@ class incomeController extends Controller
      */
     public function index()
     {
-        $incomes = Income::orderBy('id','DESC')->get();
+        $incomes = pathologyPatient::orderBy('id','DESC')->get();
         return view('backend.statement.income.index',compact('incomes'));
     }
 
