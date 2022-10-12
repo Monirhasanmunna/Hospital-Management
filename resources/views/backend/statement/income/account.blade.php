@@ -6,7 +6,7 @@
 @section('content')
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-gray-800">Referrals <a href="javascript:void(0)" class="btn btn-primary ml-3" id="AddAccount"><i class="fas fa-plus"></i>Add Account</a></h1>
+      <h1 class="h3 mb-0 text-gray-800">Accounts <a href="javascript:void(0)" class="btn btn-primary ml-3" id="AddAccount"><i class="fas fa-plus"></i>Add Account</a></h1>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('app.dashboard')}}">Home</a></li>
         <li class="breadcrumb-item">Account</li>

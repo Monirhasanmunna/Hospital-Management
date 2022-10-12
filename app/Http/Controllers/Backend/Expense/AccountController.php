@@ -15,7 +15,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        return view('backend.expense.account');
+        return view('backend.statement.income.account');
     }
 
     /**

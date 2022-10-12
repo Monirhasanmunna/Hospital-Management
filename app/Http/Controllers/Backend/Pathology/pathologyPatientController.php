@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend\Pathology;
 
 use App\Http\Controllers\Controller;
+use App\Models\Expense\Account;
+use App\Models\Income\Income;
 use App\Models\Pathology\pathologyDoctor;
 use App\Models\Pathology\pathologyPatient;
 use App\Models\Pathology\pathologyReferral;
@@ -58,7 +60,7 @@ class pathologyPatientController extends Controller
      */
     public function store(Request $request)
     {
-       
+      
         $request->validate([
             'name'              => 'required|max:100',
             'mobile'            => 'required|min:11',
@@ -99,6 +101,7 @@ class pathologyPatientController extends Controller
             ]);
 
 
+            //tests inputs string to number array create
             $stringSplit = str_split($request->set_input);
             $removeComas =  str_replace(',', '', $stringSplit);
     
@@ -107,8 +110,20 @@ class pathologyPatientController extends Controller
             },$removeComas);
 
             $deleteAllZeros = array_diff($stringToNumber, array(0));
-
             $patient->tests()->sync($deleteAllZeros);
+
+            //income created here
+            $income = Income::create([
+                'name'   => $request->name,
+                'amount' => $request->paid_amount,
+            ]);
+
+            //accounts table credit update here
+            $account = Account::where('name','Patient Service')->first();
+            $account_credited   =  $account->credit + $income->amount;
+            $account->credit    =  $account_credited;
+            $account->balance   =  $account->credit - $account->debit;
+            $account->save();
 
             return view('backend.pathology.patient.invoice',compact('patient')); 
         }
@@ -167,6 +182,7 @@ class pathologyPatientController extends Controller
             'doctor'            => 'required',
             'test'              => 'sometimes',
             'standard_rate'     => 'required',
+            'discount'          => 'sometimes',
             'discount_amount'   => 'sometimes',
             'tax_amount'        => 'required',
             'invoice_total'     => 'required',
@@ -175,10 +191,35 @@ class pathologyPatientController extends Controller
             'due'               => 'sometimes'
         ]);
 
+        $income = income::findOrfail($request->patient_id);
+        //accounts table credit update here
+        $account = Account::find(1);;
+        $account_credited   =  $account->credit - $income->amount;
+        $account->credit    =  $account_credited;
+        $account->balance   =  $account->credit - $account->debit;
+        $account->save();
+
         if($request->total < $request->paid_amount){
             notify()->warning('Can not paid more than total amount');
             return redirect()->back();
         }else{
+            $patient = pathologyPatient::findOrfail($request->patient_id);
+
+            $patient->referral_id       = $request->referral;
+            $patient->doctor_id         = $request->doctor;
+            $patient->name              = $request->name;
+            $patient->mobile            = $request->mobile;
+            $patient->age               = $request->age;
+            $patient->tax_amount        = $request->tax_amount;
+            $patient->total_amount      = $request->total;
+            $patient->discount          = $request->discount;
+            $patient->discount_amount   = $request->discount_amount;
+            $patient->paid_amount       = $request->paid_amount;
+            $patient->due_amount        = $request->due;
+            $patient->save();
+
+
+            //tests inputs string to number array create
             $stringSplit = str_split($request->set_input);
             $removeComas =  str_replace(',', '', $stringSplit);
         
@@ -187,23 +228,22 @@ class pathologyPatientController extends Controller
             },$removeComas);
                 
             $deleteAllZeros = array_diff($stringToNumber, array(0));
-
-
-            $patient = pathologyPatient::findOrfail($request->patient_id);
-            
-            $patient->referral_id       = $request->referral;
-            $patient->doctor_id         = $request->doctor;
-            $patient->name              = $request->name;
-            $patient->mobile            = $request->mobile;
-            $patient->age               = $request->age;
-            $patient->tax_amount        = $request->tax_amount;
-            $patient->total_amount      = $request->total;
-            $patient->discount_amount   = $request->discount_amount;
-            $patient->paid_amount       = $request->paid_amount;
-            $patient->due_amount        = $request->due;
-            $patient->save();
-
             $patient->tests()->sync($deleteAllZeros);
+
+
+            //income Update here
+            $income->update([
+                'name'   => $request->name,
+                'amount' => $request->paid_amount,
+            ]);
+
+            
+            //accounts table credit update here
+            $account            = Account::find(1);
+            $account_credited   =  $account->credit + $income->amount;
+            $account->credit    =  $account_credited;
+            $account->balance   =  $account->credit - $account->debit;
+            $account->save();
 
             notify()->success('Patient Updated');
             return view('backend.pathology.patient.invoice',compact('patient'));
@@ -218,7 +258,15 @@ class pathologyPatientController extends Controller
      */
     public function destroy($id)
     {
-        $patient = pathologyPatient::findOrfail($id)->delete();
-        return response($patient);
+        pathologyPatient::findOrfail($id)->delete();
+
+        $income     = Income::findOrfail($id);
+        $account    = Account::find(1);
+        $account->credit = $account->credit - $income->amount;
+        $account->balance   =  $account->credit - $account->debit;
+        $account->save();
+        $income->delete();
+
+        return response('true');
     }
 }

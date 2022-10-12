@@ -41,11 +41,11 @@
                     @foreach ($patients as $key=>$patient)
                     <tr>
                       <td>{{$key+1}}</td>
-                      <td>{{$patient->name}}</td>
-                      <td>{{$patient->age}}</td>
-                      <td>{{$patient->mobile}}</td>
-                      <td>{{$patient->referral->name}}</td>
-                      <td>{{$patient->doctor->name}}</td>
+                      <td>{{ucwords($patient->name)}}</td>
+                      <td>{{ucwords($patient->age)}}</td>
+                      <td>{{ucwords($patient->mobile)}}</td>
+                      <td>{{ucwords($patient->referral->name)}}</td>
+                      <td>{{ucwords($patient->doctor->name)}}</td>
                       <td>
                         @foreach ($patient->tests as $test)
                           <span class="badge badge-primary">{{$test->name}}</span>
@@ -212,7 +212,7 @@
                                           <span class="input-group-text"><small>Discount</small></span>
                                       </div>
                                       <div></div>
-                                      <input type="number" name="discount" id="discount" placeholder="%"
+                                      <input type="number" name="discount" id="discounts" placeholder="%"
                                           class="form-control form-control-sm">
                                       <input name="discount_amount" type="number" step="any" placeholder="Amount" id="discount_amount"
                                           class="form-control form-control-sm" readonly>
@@ -302,7 +302,7 @@
           $("#age").val(response.age);
           $("#invoice_total").val(response.invoice_total);
           $("#paid_amount").val(response.paid_amount);
-          $("#discount").val(response.discount);
+          $("#discounts").val(response.discount);
           $("#discount_amount").val(response.discount_amount);
           $("#tax").val(response.tax);
           $("#tax_amount").val(response.tax_amount);
@@ -397,7 +397,7 @@
 
 
          //discount calculation 
-         var disc = $("#discount").val();
+         var disc = $("#discounts").val();
          var disc_amount = (invoice_total/100)*disc;
          $('#discount_amount').val(disc_amount);
 
@@ -423,7 +423,7 @@
     }
 
 
-    $("#tax,#paid_amount,.delete-tr,#discounts,#tax").on('change keyup',function(){
+    $("#tax,#paid_amount,.delete-tr,#discounts").on('change keyup',function(){
         calculation();
 
         var paid_amount   = parseInt($('#paid_amount').val());

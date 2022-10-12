@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\Expense\AccountController;
 use App\Http\Controllers\Backend\Expense\ExpenseCategoryController;
 use App\Http\Controllers\Backend\Expense\ExpenseController;
+use App\Http\Controllers\Backend\Income\incomeController;
 use App\Http\Controllers\Backend\Pathology\PathologyCategoryController;
 use App\Http\Controllers\Backend\Pathology\pathologyDoctorController;
 use App\Http\Controllers\Backend\Pathology\pathologyPatientController;
@@ -121,6 +122,13 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/test/{id}',[pathologyPatientController::class,'testInfoById']);
         Route::get('/patient/{id}',[pathologyPatientController::class,'patientInfoById']);
     });
+
+    // Income route section 
+    Route::group(['as'=>'income.','prefix'=>'income','namespace'=>'Income'],function(){
+        
+        Route::get('/index',[incomeController::class,'index'])->name('index');
+
+    });
     
     // Expense route section 
     Route::group(['as'=>'expense.','prefix'=>'expense','namespace'=>'Expense'],function(){
@@ -135,7 +143,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
     });
 
     // Expense category route
-    Route::group(['as'=>'expense_category.','prefix'=>'expense_category','namespace'=>'Expense'],function(){
+    Route::group(['as'=>'expense.category.','prefix'=>'expense/category','namespace'=>'Expense'],function(){
         
         Route::get('/index',[ExpenseCategoryController::class,'index'])->name('index');
         Route::get('/create',[ExpenseCategoryController::class,'create'])->name('create');
@@ -147,7 +155,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
     });
 
     // Account Route
-    Route::group(['as'=>'account.','prefix'=>'expense/account','namespace'=>'Expense'],function(){
+    Route::group(['as'=>'account.','prefix'=>'income/account','namespace'=>'Expense'],function(){
         
         Route::get('/index',[AccountController::class,'index'])->name('index');
         Route::get('/create',[AccountController::class,'create'])->name('create');

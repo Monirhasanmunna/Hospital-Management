@@ -27,7 +27,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach (App\Models\Expense\ExpenseCategory::all() as $key=>$category)
+                    @foreach ($categories as $key=>$category)
                     <tr>
                       <td>{{$key+1}}</td>
                       <td>{{$category->code}}</td>
@@ -39,7 +39,7 @@
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" onclick="editExpenseCategory({{$category->id}})" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
-                            <a class="dropdown-item" onclick="return confirm('Are you sure to delete this data..??')" href="{{ route('app.expense_category.delete',$category->id) }}"><i class="fa-solid fa-trash"></i>Delete</a>
+                            <a class="dropdown-item" onclick="deleteCategory({{$category->id}})" href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
                           </div>
                         </div>
                       </td>
@@ -67,7 +67,7 @@
                 </button>
               </div>
                 <div class="card-body">
-                    <form action="{{route('app.expense_category.store')}}" method="POST">
+                    <form action="{{route('app.expense.category.store')}}" method="POST">
                         @csrf
                         <div class="form-row">
                           <div class="form-group col-12">
@@ -102,7 +102,7 @@
                 </button>
               </div>
                 <div class="card-body">
-                    <form action="{{route('app.expense_category.update',1)}}" method="POST">
+                    <form action="{{route('app.expense.category.update',1)}}" method="POST">
                         @csrf
                         <div class="form-row">
                           <input type="hidden" name="expense_category_id" id="expense_category_id">
@@ -134,7 +134,7 @@
     function editExpenseCategory(id){
       $('#account_id').val(id);
       if (id) {
-        $.get("/app/expense_category/edit/"+id,
+        $.get("/app/expense/category/edit/"+id,
           function (data) {
             console.log(data.data.name);
             $('#name').val(data.data.name);
@@ -144,5 +144,37 @@
         );
       }
     }
+
+
+    function deleteCategory(id){
+      Swal.fire({
+          title: 'Are you sure?',
+          text: "You will lost this data!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            )
+            $.ajax({
+              url      : '/app/expense/category/delete/'+id,
+              dataType : 'json',
+              Type     : 'DELETE',
+              success  : function(response){
+                console.log(response);
+                setTimeout(function(){
+                  window.location.reload();
+                },1000);
+              }
+            });
+            }
+          })
+      }
   </script>
 @endpush

@@ -42,7 +42,7 @@
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" onclick="editExpense({{$expense->id}})" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
-                            <a class="dropdown-item" onclick="return confirm('are you sure to delete this data..??')" href="{{ route('app.expense.delete',$expense->id) }}"><i class="fa-solid fa-trash"></i>Delete</a>
+                            <a class="dropdown-item" onclick="deleteExpense({{$expense->id}})" href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
                           </div>
                         </div>
                       </td>
@@ -175,5 +175,37 @@
         );
       }
     }
+
+    function deleteExpense(id){
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You will lost this data!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+          $.ajax({
+            url      : '/app/expense/delete/'+id,
+            dataType : 'json',
+            Type     : 'DELETE',
+            success  : function(response){
+              console.log(response);
+              setTimeout(function(){
+                window.location.reload();
+              },1000);
+            }
+          });
+          }
+        })
+      }
   </script>
 @endpush

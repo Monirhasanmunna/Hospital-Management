@@ -16,7 +16,7 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        return view('backend.expense.expense');
+        return view('backend.statement.expense.expense');
     }
 
     /**
@@ -130,7 +130,6 @@ class ExpenseController extends Controller
         $amount['balance'] += $expense['amount'];
         $amount->save();
         $expense->delete();
-        notify()->success('Expense Delete Successfully');
-        return redirect()->route('app.expense.index');
+        return response()->json($expense);
     }
 }
