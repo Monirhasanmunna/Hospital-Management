@@ -237,7 +237,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
           <a class="collapse-item" href="">General Setting</a>
           <a class="collapse-item" href="">Hospital Change</a>
-          <a class="collapse-item {{Request::is('app/setting/floor/index')?'activate':''}}" href="{{route('app.floor.index')}}">Bed</a>
+          <a class="collapse-item {{Request::is('app/setting/bed/index')?'activate':''}}" href="{{route('app.bed.index')}}">Bed</a>
           <a class="collapse-item {{Request::is('app/setting/test/create')?'activate':''}}" href="{{route('app.setting.test.create')}}">Add Test</a>
           <a class="collapse-item {{Request::is('app/setting/test/index')?'activate':''}}" href="{{route('app.setting.test.index')}}">Test List</a>
           <a class="collapse-item {{Request::is('app/setting/doctor/create')?'activate':''}}" href="{{route('app.setting.doctor.create')}}">Add Doctor</a>

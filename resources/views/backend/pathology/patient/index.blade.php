@@ -1,6 +1,11 @@
 @extends('layouts.backend.main')
 @push('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+  table.dataTable tbody th, table.dataTable tbody td {
+      padding: 2px 10px; /* e.g. change 8x to 4px here */
+  }
+</style>
 @endpush
 
 @section('content')

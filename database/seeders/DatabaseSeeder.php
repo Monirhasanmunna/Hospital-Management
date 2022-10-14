@@ -31,5 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FloorSeeder::class);
         $this->call(BedGroupsSeeder::class);
         $this->call(BedTypeSeeder::class);
+        $this->call(BedSeeder::class);
     }
 }

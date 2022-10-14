@@ -5,18 +5,19 @@ namespace App\Models\Bed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BedGroup extends Model
+class Bed extends Model
 {
     use HasFactory;
+
     protected $guarded = ['id'];
 
-    public function floor()
+    public function bedtype()
     {
-        return $this->belongsTo(Floor::class);
+        return $this->belongsTo(BedType::class);
     }
 
-    public function beds()
+    public function bedgroup()
     {
-        return $this->hasMany(Bed::class,'bedgroup_id');
+        return $this->belongsTo(BedGroup::class);
     }
 }
