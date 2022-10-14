@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Backend\Bed\BedGroupController;
+use App\Http\Controllers\Backend\Bed\BedTypeController;
 use App\Http\Controllers\Backend\Bed\FloorController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\Expense\AccountController;
@@ -191,6 +192,18 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/edit/{id}',[BedGroupController::class,'edit'])->name('edit');
         Route::post('/update/{id}',[BedGroupController::class,'update'])->name('update');
         Route::get('/delete/{id}',[BedGroupController::class,'destroy'])->name('delete');
+
+    });
+
+
+    // Bed Group Route
+    Route::group(['as'=>'bed.type.','prefix'=>'setting/bed/type','namespace'=>'Bed'],function(){
+        
+        Route::get('/index',[BedTypeController::class,'index'])->name('index');
+        Route::post('/store',[BedTypeController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[BedTypeController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[BedTypeController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[BedTypeController::class,'destroy'])->name('delete');
 
     });
 
