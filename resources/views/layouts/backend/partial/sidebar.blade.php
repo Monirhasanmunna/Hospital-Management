@@ -243,9 +243,9 @@
           <a class="collapse-item {{Request::is('app/setting/doctor/index')?'activate':''}}" href="{{route('app.setting.doctor.index')}}">Doctor List</a>
           <a class="collapse-item {{Request::is('app/setting/referral/create')?'activate':''}}" href="{{route('app.setting.referral.create')}}">Add Referral</a>
           <a class="collapse-item {{Request::is('app/setting/referral/index')?'activate':''}}" href="{{route('app.setting.referral.index')}}">Referral List</a>
-          <a class="collapse-item" href="">Floor Create</a>
-          <a class="collapse-item" href="">Cabin Create</a>
-          <a class="collapse-item" href="">Bed Create</a>
+          <a class="collapse-item" href="{{route('app.floor.index')}}">Floor</a>
+          <a class="collapse-item" href="">Cabin</a>
+          <a class="collapse-item " href="">Bed</a>
           <a class="collapse-item" href="">Operation</a>
         </div>
       </div>

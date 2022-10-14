@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Backend\Bed\FloorController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\Expense\AccountController;
 use App\Http\Controllers\Backend\Expense\ExpenseCategoryController;
@@ -163,6 +164,18 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/edit/{id}',[AccountController::class,'edit'])->name('edit');
         Route::post('/update/{id}',[AccountController::class,'update'])->name('update');
         Route::get('/delete/{id}',[AccountController::class,'destroy'])->name('delete');
+
+    });
+
+
+    // Floor Route
+    Route::group(['as'=>'floor.','prefix'=>'floor','namespace'=>'Bed'],function(){
+        
+        Route::get('/index',[FloorController::class,'index'])->name('index');
+        Route::post('/store',[FloorController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[FloorController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[FloorController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[FloorController::class,'destroy'])->name('delete');
 
     });
     
