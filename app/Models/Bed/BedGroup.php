@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Bed;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Floor extends Model
+class BedGroup extends Model
 {
     use HasFactory;
-
     protected $guarded = ['id'];
+
+    public function floor()
+    {
+        return $this->belongsTo(Floor::class);
+    }
 }

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Backend\Bed;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bed\BedGroup;
 use App\Models\Bed\Floor;
 use Illuminate\Http\Request;
 
-class FloorController extends Controller
+class BedGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,9 @@ class FloorController extends Controller
      */
     public function index()
     {   
-        $floors = Floor::all();
-        return view('backend.bed.floor.index',compact('floors'));
+        $bedGroups  = BedGroup::all();
+        $floors     = Floor::all();
+        return view('backend.bed.bedGroup.index',compact('floors','bedGroups'));
     }
 
     /**
@@ -38,16 +40,18 @@ class FloorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'          => 'required|string|unique:floors|max:50',
-            'description'   => 'required|max:1000',
+            'name'          => 'required|string|unique:bed_groups|max:100',
+            'floor_id'      => 'required',
+            'description'   => 'sometimes'
         ]);
 
-        Floor::create([
+        BedGroup::create([
             'name'          => $request->name,
+            'floor_id'      => $request->floor_id,
             'description'   => $request->description
         ]);
 
-        notify()->success('Floor Created');
+        notify()->success('Bed Group Created');
         return redirect()->back();
     }
 
@@ -70,8 +74,8 @@ class FloorController extends Controller
      */
     public function edit($id)
     {
-        $floor = Floor::findOrfail($id);
-        return response()->json($floor);
+        $bedGroup = BedGroup::with('floor')->findOrfail($id);
+        return response()->json($bedGroup);
     }
 
     /**
@@ -84,16 +88,18 @@ class FloorController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'          => 'required|string|max:50',
-            'description'   => 'required|max:1000',
+            'name'          => 'required|string|max:100',
+            'floor_id'      => 'required',
+            'description'   => 'sometimes'
         ]);
 
-        Floor::findOrfail($request->floor_id)->update([
+        BedGroup::findOrfail($request->bedgroup_id)->update([
             'name'          => $request->name,
+            'floor_id'      => $request->floor_id,
             'description'   => $request->description
         ]);
 
-        notify()->success('Floor Updated');
+        notify()->success('Bed Group Updated');
         return redirect()->back();
     }
 
@@ -105,8 +111,8 @@ class FloorController extends Controller
      */
     public function destroy($id)
     {
-        $floor = Floor::findOrfail($id);
-        $floor->delete();
-        return response()->json($floor);
+        $bedgroup = BedGroup::findOrfail($id);
+        $bedgroup->delete();
+        return response()->json($bedgroup);
     }
 }

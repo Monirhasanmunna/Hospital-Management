@@ -237,15 +237,13 @@
         <div class="bg-white py-2 collapse-inner rounded">
           <a class="collapse-item" href="">General Setting</a>
           <a class="collapse-item" href="">Hospital Change</a>
+          <a class="collapse-item {{Request::is('app/setting/floor/index')?'activate':''}}" href="{{route('app.floor.index')}}">Bed</a>
           <a class="collapse-item {{Request::is('app/setting/test/create')?'activate':''}}" href="{{route('app.setting.test.create')}}">Add Test</a>
           <a class="collapse-item {{Request::is('app/setting/test/index')?'activate':''}}" href="{{route('app.setting.test.index')}}">Test List</a>
           <a class="collapse-item {{Request::is('app/setting/doctor/create')?'activate':''}}" href="{{route('app.setting.doctor.create')}}">Add Doctor</a>
           <a class="collapse-item {{Request::is('app/setting/doctor/index')?'activate':''}}" href="{{route('app.setting.doctor.index')}}">Doctor List</a>
           <a class="collapse-item {{Request::is('app/setting/referral/create')?'activate':''}}" href="{{route('app.setting.referral.create')}}">Add Referral</a>
           <a class="collapse-item {{Request::is('app/setting/referral/index')?'activate':''}}" href="{{route('app.setting.referral.index')}}">Referral List</a>
-          <a class="collapse-item" href="{{route('app.floor.index')}}">Floor</a>
-          <a class="collapse-item" href="">Cabin</a>
-          <a class="collapse-item " href="">Bed</a>
           <a class="collapse-item" href="">Operation</a>
         </div>
       </div>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Backend\Bed\BedGroupController;
 use App\Http\Controllers\Backend\Bed\FloorController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\Expense\AccountController;
@@ -22,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/auth.php';
 
 
-
+// Route::get('/',function(){
+//     return view('backend.bed.floor.bed');
+// });
 Route::get('/', [AuthenticatedSessionController::class, 'login'])->middleware('guest');
 
 Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>['auth']],function(){
@@ -169,7 +172,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
 
 
     // Floor Route
-    Route::group(['as'=>'floor.','prefix'=>'floor','namespace'=>'Bed'],function(){
+    Route::group(['as'=>'floor.','prefix'=>'setting/floor','namespace'=>'Bed'],function(){
         
         Route::get('/index',[FloorController::class,'index'])->name('index');
         Route::post('/store',[FloorController::class,'store'])->name('store');
@@ -178,5 +181,17 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/delete/{id}',[FloorController::class,'destroy'])->name('delete');
 
     });
-    
+
+
+    // Bed Group Route
+    Route::group(['as'=>'bed.group.','prefix'=>'setting/bed/group','namespace'=>'Bed'],function(){
+        
+        Route::get('/index',[BedGroupController::class,'index'])->name('index');
+        Route::post('/store',[BedGroupController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[BedGroupController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[BedGroupController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[BedGroupController::class,'destroy'])->name('delete');
+
+    });
+
 });
