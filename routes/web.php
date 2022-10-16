@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\Expense\AccountController;
+use App\Http\Controllers\Backend\Finance\AccountController;
 use App\Http\Controllers\Backend\Expense\ExpenseCategoryController;
 use App\Http\Controllers\Backend\Expense\ExpenseController;
 use App\Http\Controllers\Backend\Pathology\PathologyCategoryController;
@@ -13,7 +13,7 @@ use App\Http\Controllers\Backend\Pathology\PathologyTestController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacyCategoryController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacySupplierController;
 use App\Http\Controllers\Backend\Pathology\PathologyUnitController;
-use App\Models\Pathology\pathologyPatient;
+use App\Http\Controllers\Backend\Setting\GeneralSettingController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -146,8 +146,8 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
 
     });
 
-    // Account Route
-    Route::group(['as'=>'account.','prefix'=>'expense/account','namespace'=>'Expense'],function(){
+    // Finance Route
+    Route::group(['as'=>'account.','prefix'=>'finance/account','namespace'=>'Finance'],function(){
         
         Route::get('/index',[AccountController::class,'index'])->name('index');
         Route::get('/create',[AccountController::class,'create'])->name('create');
@@ -155,6 +155,15 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/edit/{id}',[AccountController::class,'edit'])->name('edit');
         Route::post('/update/{id}',[AccountController::class,'update'])->name('update');
         Route::get('/delete/{id}',[AccountController::class,'destroy'])->name('delete');
+
+    });
+
+    // Setting route section
+    Route::group(['as'=>'general_setting.','prefix'=>'setting/general_setting','namespace'=>'Setting'],function(){
+        
+        Route::get('/index',[GeneralSettingController::class,'index'])->name('index');
+        Route::get('/edit/{id}',[GeneralSettingController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[GeneralSettingController::class,'update'])->name('update');
 
     });
     

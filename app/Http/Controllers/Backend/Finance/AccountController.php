@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Expense;
+namespace App\Http\Controllers\Backend\Finance;
 
 use App\Http\Controllers\Controller;
 use App\Models\Expense\Account;

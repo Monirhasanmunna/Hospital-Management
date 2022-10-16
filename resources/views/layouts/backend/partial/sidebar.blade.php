@@ -75,7 +75,6 @@
       </a>
       <div id="Expense-menu" class="collapse {{Request::is('app/expense*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item {{Request::is('app/expense/account')?'activate':''}}" href="{{ route('app.account.index') }}">Account</a>
           <a class="collapse-item {{Request::is('app/expense/expense_category')?'activate':''}}" href="{{ route('app.expense_category.index') }}">Expense Category</a>
           <a class="collapse-item {{Request::is('app/expense/expense')?'activate':''}}" href="{{ route('app.expense.index') }}">Expense</a>
         </div>
@@ -102,10 +101,9 @@
         <i class="fab fa-fw fa-wpforms"></i>
         <span>Finance</span>
       </a>
-      <div id="Finance-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+      <div id="Finance-menu" class="collapse {{Request::is('app/finance*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" href="">Add Account</a>
-          <a class="collapse-item" href="">Account List</a>
+          <a class="collapse-item {{Request::is('app/finance/account')?'activate':''}}" href="{{ route('app.account.index') }}">Account List</a>
           <a class="collapse-item" href="">Income</a>
           <a class="collapse-item" href="">Referral Payment</a>
         </div>
@@ -223,7 +221,7 @@
       </a>
       <div id="Setting-menu" class="collapse {{Request::is('app/setting*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" href="">General Setting</a>
+          <a class="collapse-item {{Request::is('app/setting/general_setting/index')?'activate':''}}" href="{{ route('app.general_setting.index') }}">General Setting</a>
           <a class="collapse-item" href="">Hospital Change</a>
           <a class="collapse-item {{Request::is('app/setting/test/create')?'activate':''}}" href="{{route('app.setting.test.create')}}">Add Test</a>
           <a class="collapse-item {{Request::is('app/setting/test/index')?'activate':''}}" href="{{route('app.setting.test.index')}}">Test List</a>

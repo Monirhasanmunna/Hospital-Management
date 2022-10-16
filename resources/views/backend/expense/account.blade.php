@@ -109,7 +109,7 @@
                 </button>
               </div>
                 <div class="card-body">
-                    <form action="{{route('app.account.update',1)}}" method="POST">
+                    <form action="{{route('app.account.update',1)}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-row">
                           <input type="hidden" name="account_id" id="account_id">

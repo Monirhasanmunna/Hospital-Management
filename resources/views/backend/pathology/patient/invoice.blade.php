@@ -150,5 +150,11 @@
   <script src="{{asset('backend/invoice/js/jspdf.min.js')}}"></script>
   <script src="{{asset('backend/invoice/js/html2canvas.min.js')}}"></script>
   <script src="{{asset('backend/invoice/js/main.js')}}"></script>
+  <script>
+    $(document).ready(function() {
+      // show the alert
+      window.print();
+  });
+  </script>
 </body>
 </html>
