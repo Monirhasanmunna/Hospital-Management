@@ -18,6 +18,7 @@ use App\Http\Controllers\Backend\Pathology\PathologyTestController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacyCategoryController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacySupplierController;
 use App\Http\Controllers\Backend\Pathology\PathologyUnitController;
+use App\Http\Controllers\Backend\Setting\GeneralSettingController;
 use App\Models\Pathology\pathologyPatient;
 use Illuminate\Support\Facades\Route;
 
@@ -216,6 +217,14 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/edit/{id}',[BedController::class,'edit'])->name('edit');
         Route::post('/update/{id}',[BedController::class,'update'])->name('update');
         Route::get('/delete/{id}',[BedController::class,'destroy'])->name('delete');
+
+    });
+    // General Setting Route
+    Route::group(['as'=>'general_setting.','prefix'=>'setting/general_setting','namespace'=>'Setting'],function(){
+        
+        Route::get('/index',[GeneralSettingController::class,'index'])->name('index');
+        Route::get('/edit/{id}',[GeneralSettingController::class,'edit'])->name('edit');
+        Route::post('/update',[GeneralSettingController::class,'update'])->name('update');
 
     });
 

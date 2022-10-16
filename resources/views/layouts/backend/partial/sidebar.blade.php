@@ -235,7 +235,7 @@
       </a>
       <div id="Setting-menu" class="collapse {{Request::is('app/setting*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" href="">General Setting</a>
+          <a class="collapse-item" href="{{ route('app.general_setting.index') }}">General Setting</a>
           <a class="collapse-item" href="">Hospital Change</a>
           <a class="collapse-item {{Request::is('app/setting/bed/index')?'activate':''}}" href="{{route('app.bed.index')}}">Bed</a>
           <a class="collapse-item {{Request::is('app/setting/test/create')?'activate':''}}" href="{{route('app.setting.test.create')}}">Add Test</a>
