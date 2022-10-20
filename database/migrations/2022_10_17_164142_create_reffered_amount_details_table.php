@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        // 'name','debit','credit','balance
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('reffered_amount_details', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->bigInteger('debit')->default(0);
-            $table->bigInteger('credit')->default(0);
-            $table->bigInteger('balance')->default(0);
-            $table->tinyInteger('is_active')->default(1)->comment('1=active/0=inactive');
+            $table->integer('patient_id');
+            $table->integer('refd_amount');
+            $table->integer('refd_paid_amount')->nullable();
+            $table->integer('doctor_paid')->nullable();
+            $table->integer('co_paid')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('reffered_amount_details');
     }
 };

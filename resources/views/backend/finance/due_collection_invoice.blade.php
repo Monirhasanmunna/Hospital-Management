@@ -52,7 +52,7 @@
               </div>
             </div>
           </div>
-          <div class="tm_grid_row tm_col_3 tm_col_2_md tm_invoice_info_in tm_gray_bg tm_mb30 tm_round_border">
+          <div class="tm_grid_row tm_col_4 tm_col_3_md tm_invoice_info_in tm_gray_bg tm_mb30 tm_round_border">
             <div>
               <span>Patient Name:</span> <br>
               <span class="tm_primary_color">{{$patient->name}}</span>
@@ -122,8 +122,12 @@
                       <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right tm_white_color tm_primary_bg tm_radius_0_6_6_0">${{$patient->total_amount}}</td>
                     </tr>
                     <tr>
+                        <td class="tm_width_3  tm_bold tm_f15 tm_primary_color">Previous Paid Amount :</td>
+                        <td class="tm_width_3  tm_bold tm_f16 tm_primary_color tm_text_right ">${{$patient->paid_amount - $paid_amount}}</td>
+                    </tr>
+                    <tr>
                         <td class="tm_width_3  tm_bold tm_f15 tm_primary_color">Paid Amount :</td>
-                        <td class="tm_width_3  tm_bold tm_f16 tm_primary_color tm_text_right ">${{$patient->paid_amount}}</td>
+                        <td class="tm_width_3  tm_bold tm_f16 tm_primary_color tm_text_right ">${{$paid_amount}}</td>
                     </tr>
                     <tr>
                         <td class="tm_width_3  tm_bold tm_f15 tm_primary_color">Due Amount :</td>

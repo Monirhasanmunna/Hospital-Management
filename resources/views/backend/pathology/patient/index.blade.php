@@ -71,7 +71,10 @@
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item"  onclick="editPatient({{$patient->id}})" data-toggle="modal" data-target=".bd-example-modal-lg" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
                             <a class="dropdown-item"  onclick = 'deletePatient({{$patient->id}})' href="javascript:void(0)"><i class="fa-solid fa-trash"></i>Delete</a>
-                            <a class="dropdown-item" target="_blank" href="{{route('app.pathology.patient.invoice',[$patient->id])}}"><i class="fa-sharp fa-solid fa-file-lines"></i></i>Parint Invoice</a>
+                            <a onclick="window.open('{{route('app.pathology.patient.invoice',[$patient->id])}}','popup','width=600,height=600,scrollbars=no,resizable=no'); return false;" class="dropdown-item" target="popup" href="{{route('app.pathology.patient.invoice',[$patient->id])}}"><i class="fa-sharp fa-solid fa-file-lines"></i></i>Parint Invoice</a>
+                            @if ($patient->due_amount == 0 && $patient->is_refferel_paid == 0 && $patient->refferel_payment->refd_amount != 0)
+                            <a class="dropdown-item"  onclick ="AddDiscount({{$patient->id}})" href="javascript:void(0)"><i class="fa-solid fa-plus"></i>Add Discount</a>
+                            @endif
                           </div>
                         </div>
                       </td>
@@ -239,6 +242,7 @@
                                         <input type="number" name="total" id="total_amount"
                                             class="form-control form-control-sm" readonly>
                                     </div>
+                                    <input type="hidden" name="refd_amount" id="refd_amount">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><small>Paid Amount</small></span>
@@ -272,6 +276,43 @@
                     </div>
                 </form>
             </div>
+            </div>
+          </div>
+    </div>
+    </div>
+  </div>
+</div>
+<!-- Large modal -->
+<div class="modal fade bd-example-modal-lg" id="DiscountModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+              <div class="card-header pt-3 pb-2 d-flex flex-row align-items-center justify-content-between bg-primary">
+                <h6 class="m-0 font-weight-bold text-white">Due Payment</h6>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+                <div class="card-body">
+                    <div class="previous_details border rounded p-3 mb-3">
+                      
+                    </div>
+                    <input type="hidden" id="discount_amount" class="discount_amount">
+                    <form id="PaymentForm">
+                        @csrf
+                        <input name="patient_id" hidden type="number" id="patient_id" class="patient_id">
+                        <div class="form-group">
+                          <label for="categoryname">Discount</label>
+                          <input placeholder="enter discount amount" type="text" class="form-control" name="discount" id="discount" class="@error('discount') is-invalid @enderror" required>
+                          @error('name')
+                              <div class="text-danger">{{ $message }}</div>
+                          @enderror
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="payment()">Submit Pay</button>
+                    </form>
+                  </div>
             </div>
           </div>
     </div>
@@ -476,6 +517,60 @@
             });
           }
       })
+    }
+
+    function AddDiscount(id){
+      console.log(id);
+      $('.patient_id').val(id);
+      $('.previous_details').html('');
+      if (id) {
+        $.get("/app/finance/previous/refferal/details/"+id,
+          function (data) {
+            console.log(data);
+            $('.discount_amount').val(data.refd_amount);
+            $('.previous_details').append(`
+                  <h3>Your Previous Details</h3>
+                  <hr>
+                  <span> <b>Your Total Amount : ${data.invoice_total}</b> </span><br>
+                  <span><b>Your Total Discount : ${data.discount_amount}</b> </span><br>
+                  <span> <b>Your Grant Total Amount : ${data.total_amount}</b> </span><br>
+                  <span><b>Your Paid Amount : ${data.paid_amount}</b> </span><br>
+                  <span><b>Your Maximam Discount Amount : ${data.refd_amount}</b> </span><br>
+            `);
+          }
+        );
+      }
+      $('#DiscountModel').modal('show');
+    }
+
+    $('input[name="discount"]').on('click keyup', function () {
+      const discount_amount = parseInt($('.discount_amount').val());
+      var paid = $(this).val();
+      if (discount_amount < paid) {
+        alert('You can not cross your Maximam Discount Amount');
+        $(this).val(0)
+      }
+    });
+
+    function payment(){
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      var data = $('#PaymentForm').serialize();
+      $.ajax({
+        type: "POST",
+        url: "{{ route('app.addDiscount') }}",
+        data: data,
+        dataType: "json",
+        success: function (response) {
+          $('#DiscountModel').modal('hide');
+          console.log(response);
+          location.reload();
+
+        }
+      });
     }
   </script>
 @endpush

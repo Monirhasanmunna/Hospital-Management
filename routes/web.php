@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\Expense\AccountController;
 use App\Http\Controllers\Backend\Expense\ExpenseCategoryController;
 use App\Http\Controllers\Backend\Expense\ExpenseController;
+use App\Http\Controllers\Backend\Finance\DueCollectionController;
 use App\Http\Controllers\Backend\Income\incomeController;
 use App\Http\Controllers\Backend\Pathology\PathologyCategoryController;
 use App\Http\Controllers\Backend\Pathology\pathologyDoctorController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Backend\Pathology\PathologyTestController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacyCategoryController;
 use App\Http\Controllers\Backend\Pharmacy\PharmacySupplierController;
 use App\Http\Controllers\Backend\Pathology\PathologyUnitController;
+use App\Http\Controllers\Backend\Report\ReportController;
 use App\Http\Controllers\Backend\Setting\GeneralSettingController;
 use App\Models\Pathology\pathologyPatient;
 use Illuminate\Support\Facades\Route;
@@ -58,7 +60,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
     });
 
 
-    Route::group(['as'=>'pathology.category.','prefix'=>'pathology/category','namespace'=>'Pathology'],function(){
+    Route::group(['as'=>'setting.category.','prefix'=>'setting/category','namespace'=>'Pathology'],function(){
         
         Route::get('/index',[PathologyCategoryController::class,'index'])->name('index');
         Route::get('/create',[PathologyCategoryController::class,'create'])->name('create');
@@ -124,6 +126,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/invoice/{id}',[pathologyPatientController::class,'invoice'])->name('invoice');
         Route::post('/update/{id}',[pathologyPatientController::class,'update'])->name('update');
         Route::get('/delete/{id}',[pathologyPatientController::class,'destroy'])->name('delete');
+        Route::get('/show/{id}',[pathologyPatientController::class,'show'])->name('show');
         
         // Ajax Route
         Route::get('/test/{id}',[pathologyPatientController::class,'testInfoById']);
@@ -161,17 +164,7 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
 
     });
 
-    // Account Route
-    Route::group(['as'=>'account.','prefix'=>'income/account','namespace'=>'Expense'],function(){
-        
-        Route::get('/index',[AccountController::class,'index'])->name('index');
-        Route::get('/create',[AccountController::class,'create'])->name('create');
-        Route::post('/store',[AccountController::class,'store'])->name('store');
-        Route::get('/edit/{id}',[AccountController::class,'edit'])->name('edit');
-        Route::post('/update/{id}',[AccountController::class,'update'])->name('update');
-        Route::get('/delete/{id}',[AccountController::class,'destroy'])->name('delete');
-
-    });
+    
 
 
     // Floor Route
@@ -225,6 +218,74 @@ Route::group(['as'=>'app.','prefix'=>'app','namespace'=>'Backend','middleware'=>
         Route::get('/index',[GeneralSettingController::class,'index'])->name('index');
         Route::get('/edit/{id}',[GeneralSettingController::class,'edit'])->name('edit');
         Route::post('/update',[GeneralSettingController::class,'update'])->name('update');
+
+    });
+
+
+    // Account Route
+    Route::group(['as'=>'account.','prefix'=>'finance/account','namespace'=>'Expense'],function(){
+        
+        Route::get('/index',[AccountController::class,'index'])->name('index');
+        Route::get('/create',[AccountController::class,'create'])->name('create');
+        Route::post('/store',[AccountController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[AccountController::class,'edit'])->name('edit');
+        Route::post('/update/{id}',[AccountController::class,'update'])->name('update');
+        Route::get('/delete/{id}',[AccountController::class,'destroy'])->name('delete');
+
+    });
+
+    // finance route 
+    Route::group(['prefix'=>'finance','namespace'=>'Finance'],function(){
+        
+        Route::get('/due_collection',[DueCollectionController::class,'index'])->name('due_collection.index');
+        Route::get('/previous/details/{id}',[DueCollectionController::class, 'previousDetails']);
+        Route::post('/due/payment',[DueCollectionController::class,'due_payment'])->name('due_payment');
+        Route::get('/due/payment/invoice/{id}/{paid}',[DueCollectionController::class,'duepaymentInvoice']);
+
+        Route::get('/refferel_payment',[DueCollectionController::class,'refferel_pay'])->name('refferel_pay');
+        Route::get('/previous/refferal/details/{id}',[DueCollectionController::class,'previousRefferalDetails']);
+        Route::post('/refferal/payment',[DueCollectionController::class,'refferal_payment'])->name('refferal_payment');
+        Route::get('/refferal/payment/invoice/{id}/{paid}',[DueCollectionController::class,'refferalpaymentInvoice']);
+
+        Route::get('/doctor_payment',[DueCollectionController::class,'doctor_pay'])->name('doctor_pay');
+        Route::post('/doctor/payment',[DueCollectionController::class,'doctor_payment'])->name('doctor_payment');
+        Route::get('/doctor/payment/invoice/{id}/{paid}',[DueCollectionController::class,'doctorpaymentInvoice']);
+
+        Route::post('/addDiscount',[DueCollectionController::class, 'addDiscount'])->name('addDiscount');
+
+    });
+
+    // report route 
+    Route::group(['as'=>'report.','prefix'=>'report','namespace'=>'Report'],function(){
+        
+        Route::get('/collection',[ReportController::class,'collectionIndex'])->name('collectionIndex');
+        Route::get('/collectio_report/{from}/{to}',[ReportController::class,'collectio_report'])->name('collection');
+        Route::get('/collection_report_print/{from}/{to}',[ReportController::class,'collection_report_print']);
+
+        Route::get('/refd_pay',[ReportController::class,'refd_payIndex'])->name('refd');
+        Route::get('/refd_pay_report/{from}/{to}',[ReportController::class, 'refd_pay_report'])->name('refd_pay');
+        Route::get('/refd_pay_report_print/{from}/{to}',[ReportController::class,'refd_pay_report_print']);
+
+        Route::get('/doctor_pay',[ReportController::class,'doctor_payIndex'])->name('doctor');
+        Route::get('/doctor_pay_report/{from}/{to}',[ReportController::class,'doctor_pay_report'])->name('doctor_pay');
+        Route::get('/doctor_pay_report_print/{from}/{to}',[ReportController::class,'doctor_pay_report_print']);
+
+        Route::get('/expense',[ReportController::class,'expenseIndex'])->name('expense');
+        Route::get('/expense_report/{from}/{to}',[ReportController::class,'expense_report'])->name('expense_report');
+        Route::get('/expense_report_print/{from}/{to}',[ReportController::class,'expense_report_print']);
+
+        Route::get('/income',[ReportController::class,'incomeIndex'])->name('income');
+        Route::get('/income/{from}/{to}',[ReportController::class,'income_report'])->name('income_report');
+        Route::get('/income_report_print/{from}/{to}',[ReportController::class,'income_report_print']);
+
+        Route::get('/due',[ReportController::class,'dueIndex'])->name('due');
+        Route::get('/due/{from}/{to}',[ReportController::class,'due_report'])->name('due_report');
+        Route::get('/due_report_print/{from}/{to}',[ReportController::class,'due_report_print']);
+
+        Route::get('/discount',[ReportController::class,'discountIndex'])->name('discount');
+        Route::get('/discount/{from}/{to}',[ReportController::class,'discount_report'])->name('discount_report');
+        Route::get('/discount_report_print/{from}/{to}',[ReportController::class,'discount_report_print']);
+
 
     });
 

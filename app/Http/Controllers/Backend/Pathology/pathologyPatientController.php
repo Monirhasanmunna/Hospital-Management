@@ -9,6 +9,7 @@ use App\Models\Pathology\pathologyDoctor;
 use App\Models\Pathology\pathologyPatient;
 use App\Models\Pathology\pathologyReferral;
 use App\Models\Pathology\pathologyTest;
+use App\Models\RefferedAmountDetail;
 use Faker\Core\Number;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -60,7 +61,6 @@ class pathologyPatientController extends Controller
      */
     public function store(Request $request)
     {
-      
         $request->validate([
             'name'              => 'required|max:100',
             'mobile'            => 'required|min:11',
@@ -83,6 +83,8 @@ class pathologyPatientController extends Controller
             notify()->warning('Can not paid more than total amount');
             return redirect()->back();
         }else{
+
+            
             $patient = pathologyPatient::create([
                 'referral_id'       => $request->referral,
                 'doctor_id'         => $request->doctor,
@@ -100,6 +102,16 @@ class pathologyPatientController extends Controller
                 'due_amount'        => $request->due
             ]);
 
+            // patient refferel payment details 
+            if ($request->discount_amount ) {
+                $refd_amount = $request->refd_amount - $request->discount_amount;
+            }else{
+                $refd_amount = $request->refd_amount;
+            }
+            RefferedAmountDetail::create([
+                'patient_id' => $patient->id,
+                'refd_amount' =>$refd_amount,
+            ]);
 
             //tests inputs string to number array create
             $stringSplit = str_split($request->set_input);
@@ -114,13 +126,14 @@ class pathologyPatientController extends Controller
 
 
             //accounts table credit update here
-            $account = Account::where('name','Patient Service')->first();
+            $account = Account::find(1);
             $account_credited   =  $account->credit + $patient->paid_amount;
             $account->credit    =  $account_credited;
             $account->balance   =  $account->credit - $account->debit;
             $account->save();
 
-            return view('backend.pathology.patient.invoice',compact('patient')); 
+            return response()->json(['id' => $patient->id]);
+            // return view('backend.pathology.patient.invoice',compact('patient')); 
         }
     }
 
@@ -132,7 +145,9 @@ class pathologyPatientController extends Controller
      */
     public function show($id)
     {
-        //
+        $patient = pathologyPatient::find($id);
+        return view('backend.pathology.patient.invoice',compact('patient')); 
+        
     }
 
 
@@ -213,7 +228,16 @@ class pathologyPatientController extends Controller
             $patient->due_amount        = $request->due;
             $patient->save();
 
-
+            // refferel payment details update
+            // $refd_amount = RefferedAmountDetail::find($patient->id)->refd_amount;
+            
+            // if ($request->discount_amount ) {
+            //     $refd_amount -= $request->discount_amount;
+            // }
+            // $refferel_payment = RefferedAmountDetail::find($patient->id);
+            // $refferel_payment->update([
+            //     'refd_amount' =>$refd_amount,
+            // ]);
             //tests inputs string to number array create
             $stringSplit = str_split($request->set_input);
             $removeComas =  str_replace(',', '', $stringSplit);

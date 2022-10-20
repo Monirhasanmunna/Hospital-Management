@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link href="{{asset('backend/img/logo/logo.png')}}" rel="icon">
   <title>Hospital Management</title>
   <link href="{{asset('backend/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -35,7 +36,7 @@
         <!-- TopBar -->
         @include('layouts.backend.partial.topbar')
         <!-- Topbar -->
-
+        
         <!-- Container Fluid-->
         @yield('content')
         <!---Container Fluid-->

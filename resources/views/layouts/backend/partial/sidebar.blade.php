@@ -15,7 +15,7 @@
     <div class="sidebar-heading">
       Features
     </div>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link collapsed" active href="#" data-toggle="collapse" data-target="#Pharmacy-menu" aria-expanded="true"
         aria-controls="Pharmacy-menu">
         <i class="fab fa-fw fa-wpforms"></i>
@@ -32,7 +32,7 @@
           <a class="collapse-item" href="">Report</a>
         </div>
       </div>
-    </li>
+    </li> --}}
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pathology-menu" aria-expanded="true"
         aria-controls="pathology-menu">
@@ -41,20 +41,18 @@
       </a>
       <div id="pathology-menu" class="collapse {{Request::is('app/pathology*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" href="">Generate Bill</a>
+          {{-- <a class="collapse-item" href="">Generate Bill</a> --}}
           <a class="collapse-item {{Request::is('app/pathology/patient/create')?'activate':''}}" href="{{route('app.pathology.patient.create')}}">New Patient</a>
           <a class="collapse-item {{Request::is('app/pathology/patient/index')?'activate':''}}" href="{{route('app.pathology.patient.index')}}">Patient List</a>
-          <a class="collapse-item {{Request::is('app/pathology/category/create')?'activate':''}}" href="{{route('app.pathology.category.create')}}">Add Category</a>
-          <a class="collapse-item {{Request::is('app/pathology/category/index')?'activate':''}}" href="{{route('app.pathology.category.index')}}">Category List</a>
-          <a class="collapse-item" href="">Add Parameter</a>
-          <a class="collapse-item" href="">Parameter List</a>
+          {{-- <a class="collapse-item" href="">Add Parameter</a>
+          <a class="collapse-item" href="">Parameter List</a> --}}
           <a class="collapse-item {{Request::is('app/pathology/unit/create')?'activate':''}}" href="{{route('app.pathology.unit.create')}}">Add Unit</a>
           <a class="collapse-item {{Request::is('app/pathology/unit/index')?'activate':''}}" href="{{route('app.pathology.unit.index')}}">Unit List</a>
-          <a class="collapse-item" href="">Set Pathology</a>
+          {{-- <a class="collapse-item" href="">Set Pathology</a> --}}
         </div>
       </div>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#IPD-menu" aria-expanded="true"
         aria-controls="IPD-menu">
         <i class="fab fa-fw fa-wpforms"></i>
@@ -66,8 +64,8 @@
           <a class="collapse-item" href="">Discharge Patient</a>
         </div>
       </div>
-    </li>
-    <li class="nav-item">
+    </li> --}}
+    {{-- <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#income-menu" aria-expanded="true"
         aria-controls="income-menu">
         <i class="fab fa-fw fa-wpforms"></i>
@@ -79,7 +77,7 @@
           <a class="collapse-item {{Request::is('app/income/account/index')?'activate':''}}" href="{{ route('app.account.index') }}">Account</a>
         </div>
       </div>
-    </li>
+    </li> --}}
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Expense-menu" aria-expanded="true"
         aria-controls="Expense-menu">
@@ -93,7 +91,7 @@
         </div>
       </div>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ICU-menu" aria-expanded="true"
         aria-controls="IPD-menu">
         <i class="fab fa-fw fa-wpforms"></i>
@@ -107,19 +105,21 @@
           <a class="collapse-item" href="">Patient Condition Note</a>
         </div>
       </div>
-    </li>
+    </li> --}}
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Finance-menu" aria-expanded="true"
         aria-controls="IPD-menu">
         <i class="fab fa-fw fa-wpforms"></i>
         <span>Finance</span>
       </a>
-      <div id="Finance-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+      <div id="Finance-menu" class="collapse {{Request::is('app/finance*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" href="">Add Account</a>
-          <a class="collapse-item" href="">Account List</a>
-          <a class="collapse-item" href="">Income</a>
-          <a class="collapse-item" href="">Referral Payment</a>
+          <a class="collapse-item {{Request::is('app/finance/account/index')?'activate':''}}" href="{{ route('app.account.index') }}">Account</a>
+          {{-- <a class="collapse-item {{Request::is('app/finance/index')?'activate':''}}" href="{{ route('app.income.index') }}">Income</a> --}}
+          <a class="collapse-item {{Request::is('app/finance/due_collection')?'activate':''}}" href="{{ route('app.due_collection.index') }}">Due Collection</a>
+          <a class="collapse-item {{Request::is('app/finance/refferel_payment')?'activate':''}}" href="{{ route('app.refferel_pay') }}">Refferel Payment</a>
+          <a class="collapse-item {{Request::is('app/finance/doctor_payment')?'activate':''}}" href="{{ route('app.doctor_pay') }}">Doctor Payment</a>
+          
         </div>
       </div>
     </li>
@@ -137,7 +137,7 @@
         </div>
       </div>
     </li> --}}
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Referral-menu" aria-expanded="true"
         aria-controls="IPD-menu">
         <i class="fab fa-fw fa-wpforms"></i>
@@ -151,8 +151,8 @@
           <a class="collapse-item" href="">Report</a>
         </div>
       </div>
-    </li>
-    <li class="nav-item">
+    </li> --}}
+    {{-- <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Bank-menu" aria-expanded="true"
         aria-controls="IPD-menu">
         <i class="fab fa-fw fa-wpforms"></i>
@@ -165,8 +165,8 @@
           <a class="collapse-item" href="">Bank Transaction</a>
         </div>
       </div>
-    </li>
-    <li class="nav-item">
+    </li> --}}
+    {{-- <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#HRM-menu" aria-expanded="true"
         aria-controls="IPD-menu">
         <i class="fab fa-fw fa-wpforms"></i>
@@ -183,8 +183,8 @@
           <a class="collapse-item" href="">Payroll</a>
         </div>
       </div>
-    </li>
-    <li class="nav-item">
+    </li> --}}
+    {{-- <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Inventory-menu" aria-expanded="true"
         aria-controls="IPD-menu">
         <i class="fab fa-fw fa-wpforms"></i>
@@ -200,30 +200,27 @@
       <a class="collapse-item" href="">Stock Deduct/Used</a>
         </div>
       </div>
-    </li>
+    </li> --}}
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Report-menu" aria-expanded="true"
         aria-controls="IPD-menu">
         <i class="fab fa-fw fa-wpforms"></i>
         <span>Report</span>
       </a>
-      <div id="Report-menu" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+      <div id="Report-menu" class="collapse {{Request::is('app/report*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" href="">Daily Transaction Report</a>
-          <a class="collapse-item" href="">All Transaction Report</a>
-          <a class="collapse-item" href="">IPD Report</a>
-          <a class="collapse-item" href="">IPD Balance Report</a>
-          <a class="collapse-item" href="">IPD Discharge Report</a>
-          <a class="collapse-item" href="">Pharmacy Bill Report</a>
-          <a class="collapse-item" href="">OT Report</a>
-          <a class="collapse-item" href="">Income Report</a>
-          <a class="collapse-item" href="">Expense Report</a>
-          <a class="collapse-item" href="">Payroll Report</a>
-          <a class="collapse-item" href="">Inventory Report</a>
+          <a class="collapse-item {{Request::is('app/report/collection*')?'activate':''}}" href="{{ route('app.report.collectionIndex') }}">Collection Report</a>
+          <a class="collapse-item {{Request::is('app/report/refd_pay*')?'activate':''}}" href="{{ route('app.report.refd') }}">Referral Payment Report</a>
+          <a class="collapse-item {{Request::is('app/report/doctor_pay*')?'activate':''}}" href="{{ route('app.report.doctor') }}">Doctor Payment Report</a>
+          <a class="collapse-item {{Request::is('app/report/expense*')?'activate':''}}" href="{{ route('app.report.expense') }}">Expense Report</a>
+          <a class="collapse-item {{Request::is('app/report/income*')?'activate':''}}" href="{{ route('app.report.income') }}">Income Report</a>
+          <a class="collapse-item {{Request::is('app/report/due*')?'activate':''}}" href="{{ route('app.report.due') }}">Due Report</a>
+          <a class="collapse-item {{Request::is('app/report/discount*')?'activate':''}}" href="{{ route('app.report.discount') }}">Discount Report</a>
+          {{-- <a class="collapse-item" href="">Inventory Report</a>
           <a class="collapse-item" href="">Attendance Report</a>
           <a class="collapse-item" href="">Patient Bill Report</a>
           <a class="collapse-item" href="">Referral Report</a>
-          <a class="collapse-item" href="">Pathology Report</a>
+          <a class="collapse-item" href="">Pathology Report</a> --}}
         </div>
       </div>
     </li>
@@ -236,7 +233,7 @@
       <div id="Setting-menu" class="collapse {{Request::is('app/setting*')?'show':''}}" aria-labelledby="headingForm" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <a class="collapse-item" href="{{ route('app.general_setting.index') }}">General Setting</a>
-          <a class="collapse-item" href="">Hospital Change</a>
+          {{-- <a class="collapse-item" href="">Hospital Change</a> --}}
           <a class="collapse-item {{Request::is('app/setting/bed/index')?'activate':''}}" href="{{route('app.bed.index')}}">Bed</a>
           <a class="collapse-item {{Request::is('app/setting/test/create')?'activate':''}}" href="{{route('app.setting.test.create')}}">Add Test</a>
           <a class="collapse-item {{Request::is('app/setting/test/index')?'activate':''}}" href="{{route('app.setting.test.index')}}">Test List</a>
@@ -244,7 +241,9 @@
           <a class="collapse-item {{Request::is('app/setting/doctor/index')?'activate':''}}" href="{{route('app.setting.doctor.index')}}">Doctor List</a>
           <a class="collapse-item {{Request::is('app/setting/referral/create')?'activate':''}}" href="{{route('app.setting.referral.create')}}">Add Referral</a>
           <a class="collapse-item {{Request::is('app/setting/referral/index')?'activate':''}}" href="{{route('app.setting.referral.index')}}">Referral List</a>
-          <a class="collapse-item" href="">Operation</a>
+          <a class="collapse-item {{Request::is('app/setting/category/create')?'activate':''}}" href="{{route('app.setting.category.create')}}">Add Category</a>
+          <a class="collapse-item {{Request::is('app/setting/category/index')?'activate':''}}" href="{{route('app.setting.category.index')}}">Category List</a>
+          {{-- <a class="collapse-item" href="">Operation</a> --}}
         </div>
       </div>
     </li>

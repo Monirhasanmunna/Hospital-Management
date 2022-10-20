@@ -22,8 +22,14 @@
         <div class="col-lg-12">
             <div class="card mb-1">
                 <div class="card-body py-3">
-                    <form action="{{route('app.pathology.patient.store')}}" method="POST">
-                        @csrf
+                  <div>
+                    <ul class="error_list">
+
+                    </ul>
+                  </div>
+                  {{-- action="{{route('app.pathology.patient.store')}}" method="POST" --}}
+                    <form id="patient_insert_form">
+                        {{-- @csrf --}}
                         <div class="row">
                             <div class="col-md-9 float-left">
                                 <div class="card-body px-0">
@@ -138,6 +144,7 @@
                                             <input name="discount_amount" type="number" step="any" placeholder="Amount" id="discount_amount"
                                                 class="form-control form-control-sm" readonly>
                                         </div>
+                                        <input type="hidden" name="refd_amount" id="refd_amount">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" style=""><small>Tax (%)</small></span>
@@ -171,19 +178,19 @@
                                       </div>
                                         <div class="row px-3 mt-4">
                                             <div class="col-sm-5" style="padding: 0 !important;">
-                                                <button type="submit" class="btn btn-sm btn-primary  save-btn" target="_blank"><i
+                                                <button onclick="PatientCreate()" type="button" class="btn btn-sm btn-primary  save-btn" target="_blank"><i
                                                         class="fa fa-save"></i>
                                                     Save</button>
                                             </div>
 
                                             <div class="col-sm-5 ml-auto" style="padding: 0 !important;">
-                                                {{-- <a href="{{route('app.pathology.patient.index')}}" class="btn btn-sm btn-success float-right"><i
+                                                <a href="{{route('app.pathology.patient.create')}}" class="btn btn-sm btn-success float-right"><i
                                                         class="fa fa-list"></i>
-                                                    List</a> --}}
+                                                    List</a>
 
-                                                    <a href="{{route('app.pathology.patient.index')}}" onclick="javascript:window.print();" class="btn btn-sm btn-success float-right"><i
+                                                    {{-- <a href="{{route('app.pathology.patient.index')}}" onclick="javascript:window.print();" class="btn btn-sm btn-success float-right"><i
                                                       class="fa fa-list"></i>
-                                                  List</a>
+                                                  List</a> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -232,6 +239,7 @@
                           <td class='sl_no'>${'#'}</td>
                           <td>${response.name}</td>
                           <td>
+                            <input type="hidden" class="discount_amount" value='${response.refd_amount}'>
                             <input type='text' class="form-control form-control-sm standard_rate" value='${response.standard_rate}' readonly></input>
                           </td>
                           <td><a href="" class=" btn-danger btn-sm delete-tr"><i class="fa fa-trash"></i></a></td>
@@ -266,12 +274,20 @@
         var invoice_total  = 0;
         var discount_total = 0;
 
+
         //standard rate total calculation 
         $('.standard_rate').each(function(index,item){
           let sub_total  = $(item).val();
           invoice_total += parseInt(sub_total);
         });
 
+        // refd amount calculation
+        $('.discount_amount').each(function (index,item) { 
+          let refd_amount  = $(item).val();
+          discount_total += parseInt(refd_amount);
+        });
+
+        $('#refd_amount').val(discount_total);
         $('#invoice_total').val(invoice_total);
 
 
@@ -304,13 +320,43 @@
         var paid_amount  = parseInt($('#paid_amount').val());
         //error message for paid amount
         if(total_amount < paid_amount){
+          $('#paid_amount').val(0)
           iziToast.show({
               title: 'Sorry',
               message: 'Can not paid more than total amount',
               position: 'topRight',
               color: 'red', // blue, red, green, yellow
           });
+          calculation();
         }
       });
+
+      function PatientCreate(){
+        $('.error_list').html('');
+        $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        var properties = "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=700,height=300";
+        var data = $('#patient_insert_form').serialize();
+        $.ajax({
+        type: "POST",
+        url: "{{ route('app.pathology.patient.store') }}",
+        data: data,
+        dataType: "json",
+        success: function (response) {
+          console.log(response);
+          window.open("/app/pathology/patient/show/"+response.id,"popup",properties);
+          location.reload();
+        },
+        error: function(reject) {
+            var response = $.parseJSON(reject.responseText);
+            $.each(response.errors, function(key, val) {
+                $('.error_list').append(`<li class="text-danger">`+val+`</li>`);
+            })
+        }
+      });
+      }
     </script>
 @endpush

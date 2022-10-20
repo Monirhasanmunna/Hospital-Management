@@ -46,13 +46,13 @@
                 <div style="text-align: end;">
                   <b class="tm_primary_color">Doctor:</b> <br>
                   {{$patient->doctor->name}}  <br>
-                  {{$patient->doctor->title}} <br>
+                  {{$patient->doctor->title}}  <br>
             +880 {{$patient->doctor->mobile}}
                 </div>
               </div>
             </div>
           </div>
-          <div class="tm_grid_row tm_col_3 tm_col_2_md tm_invoice_info_in tm_gray_bg tm_mb30 tm_round_border">
+          <div class="tm_grid_row tm_col_4 tm_col_3_md tm_invoice_info_in tm_gray_bg tm_mb30 tm_round_border">
             <div>
               <span>Patient Name:</span> <br>
               <span class="tm_primary_color">{{$patient->name}}</span>
@@ -87,12 +87,18 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php
+                      $total = 0;
+                    @endphp
                     @foreach ($patient->tests as $test)
                     <tr>
                       <td class="tm_width_4">{{$test->name}}</td>
                       <td class="tm_width_5">{{$test->code}}</td>
-                      <td class="tm_width_3 tm_text_right">{{$test->standard_rate}}</td>
+                      <td class="tm_width_3 tm_text_right">{{$test->refd_amount}}</td>
                     </tr>
+                    @php
+                      $total += $test->refd_amount;
+                    @endphp
                     @endforeach
                   </tbody>
                 </table>
@@ -107,7 +113,7 @@
                   <tbody>
                     <tr>
                       <td class="tm_width_3 tm_primary_color tm_border_none">Subtoal</td>
-                      <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none">${{$patient->invoice_total}}</td>
+                      <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none">${{$total}}</td>
                     </tr>
                     <tr>
                       <td class="tm_width_3 tm_danger_color tm_border_none tm_pt0">Discount {{$patient->discount}}%</td>
@@ -119,15 +125,19 @@
                     </tr>
                     <tr>
                       <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color tm_primary_bg tm_radius_6_0_0_6">Grand Total</td>
-                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right tm_white_color tm_primary_bg tm_radius_0_6_6_0">${{$patient->total_amount}}</td>
+                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right tm_white_color tm_primary_bg tm_radius_0_6_6_0">${{$total - $patient->discount_amount}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tm_width_3  tm_bold tm_f15 tm_primary_color">Previous Paid Amount :</td>
+                        <td class="tm_width_3  tm_bold tm_f16 tm_primary_color tm_text_right ">${{$refferalPayment->refd_paid_amount - $paid_amount}}</td>
                     </tr>
                     <tr>
                         <td class="tm_width_3  tm_bold tm_f15 tm_primary_color">Paid Amount :</td>
-                        <td class="tm_width_3  tm_bold tm_f16 tm_primary_color tm_text_right ">${{$patient->paid_amount}}</td>
+                        <td class="tm_width_3  tm_bold tm_f16 tm_primary_color tm_text_right ">${{$paid_amount}}</td>
                     </tr>
                     <tr>
                         <td class="tm_width_3  tm_bold tm_f15 tm_primary_color">Due Amount :</td>
-                        <td class="tm_width_3  tm_bold tm_f16 tm_primary_color tm_text_right ">${{$patient->due_amount}}</td>
+                        <td class="tm_width_3  tm_bold tm_f16 tm_primary_color tm_text_right ">${{$refferalPayment->refd_amount - $refferalPayment->refd_paid_amount}}</td>
                     </tr>
                   </tbody>
                 </table>

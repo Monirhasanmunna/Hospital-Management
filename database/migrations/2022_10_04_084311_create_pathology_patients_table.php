@@ -29,6 +29,7 @@ return new class extends Migration
             $table->bigInteger('paid_amount');
             $table->bigInteger('due_amount')->nullable();
             $table->string('address');
+            $table->tinyInteger('is_refferel_paid')->default(0);
             $table->timestamps();
         });
     }

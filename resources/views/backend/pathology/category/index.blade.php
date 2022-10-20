@@ -65,7 +65,7 @@
                 </button>
               </div>
                 <div class="card-body">
-                    <form action="{{route('app.pathology.category.update',[1])}}" method="POST">
+                    <form action="{{route('app.setting.category.update',[1])}}" method="POST">
                         @csrf
                         <input name="category_id" hidden type="number" id="category_id">
                         <div class="form-group">
@@ -91,7 +91,7 @@
 
     function editCategory(id){
       $.ajax({
-        url       : '/app/pathology/category/edit/'+id,
+        url       : '/app/setting/category/edit/'+id,
         Type      : 'GET',
         dataType  : 'json',
         success   : function(response){
@@ -119,7 +119,7 @@
               'success'
             )
             $.ajax({
-              url      : '/app/pathology/category/delete/'+id,
+              url      : '/app/setting/category/delete/'+id,
               dataType : 'json',
               Type     : 'DELETE',
               success  : function(response){

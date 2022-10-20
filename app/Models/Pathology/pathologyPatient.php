@@ -2,6 +2,7 @@
 
 namespace App\Models\Pathology;
 
+use App\Models\RefferedAmountDetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,10 @@ class pathologyPatient extends Model
     public function tests()
     {
         return $this->belongsToMany(pathologyTest::class,'patient_test','pathology_patient_id','pathology_test_id');
+    }
+
+    public function refferel_payment()
+    {
+        return $this->hasOne(RefferedAmountDetail::class,'patient_id','id');
     }
 }

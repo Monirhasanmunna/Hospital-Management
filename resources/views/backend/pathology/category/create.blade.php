@@ -26,7 +26,7 @@
         <div class="col-lg-12">
             <div class="card mb-4">
                 <div class="card-body">
-                    <form action="{{route('app.pathology.category.store')}}" method="POST">
+                    <form action="{{route('app.setting.category.store')}}" method="POST">
                         @csrf
                       <div class="form-group">
                         <label for="categoryname">Name</label>
