@@ -272,12 +272,13 @@ class pathologyPatientController extends Controller
     {
         $patient = pathologyPatient::findOrfail($id);
         $account    = Account::find(1);
+        $refferel_paid_details = RefferedAmountDetail::where('patient_id',$id)->first();
 
         $account->credit = $account->credit - $patient->paid_amount;
         $account->balance   =  $account->credit - $account->debit;
         $account->save();
         $patient->delete();
-
+        $refferel_paid_details->delete();
         return response('true');
     }
 }
