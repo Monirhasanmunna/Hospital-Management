@@ -82,6 +82,7 @@
                         
                       </div>
                       <input type="hidden" id="previousDue">
+                      <input type="hidden" id="maxdiscount">
                       <form id="PaymentForm">
                           @csrf
                           <input name="patient_id" hidden type="number" id="patient_id">
@@ -119,14 +120,16 @@
                 function (data) {
                   console.log(data);
                   $('#previousDue').val(data.due_amount);
+                  $('#maxdiscount').val(data.refd_amount);
                   $('.previous_details').append(`
-                        <h3>Your Previous Details</h3>
-                        <hr>
-                        <span> <b>Your Total Amount : ${data.invoice_total}</b> </span><br>
-                        <span><b>Your Total Discount : ${data.discount_amount}</b> </span><br>
-                        <span> <b>Your Grant Total Amount : ${data.total_amount}</b> </span><br>
-                        <span><b>Your Paid Amount : ${data.paid_amount}</b> </span><br>
-                        <span><b>Your Total Due Amount : ${data.due_amount}</b> </span><br>
+                      <h3>Your Previous Details</h3>
+                      <hr>
+                      <span> <b>Your Total Amount : ${data.invoice_total}</b> </span><br>
+                      <span><b>Your Total Discount : ${data.discount_amount}</b> </span><br>
+                      <span> <b>Your Grant Total Amount : ${data.total_amount}</b> </span><br>
+                      <span><b>Your Paid Amount : ${data.paid_amount}</b> </span><br>
+                      <span><b>Your Total Due Amount : ${data.due_amount}</b> </span><br>
+                      <span><b>Your Maximam Discount Amount : ${data.refd_amount}</b> </span><br>
                   `);
                 }
               );
@@ -135,11 +138,26 @@
         }
         $('input[name="amount"], input[name="discount"]').on('click keyup', function () {
           const previousDue = $('#previousDue').val();
+          var maxdiscount = parseInt($('#maxdiscount').val());
           var paid = parseInt($('#amount').val());
           var discount = parseInt($('#discount').val());
           if (previousDue < paid + discount) {
-            alert('Your paid amount is more than due amount');
+            iziToast.show({
+              title: 'Sorry',
+              message: 'Can not paid more than total due',
+              position: 'topRight',
+              color: 'red', // blue, red, green, yellow
+          });
             $(this).val(0)
+          }
+          if (maxdiscount < discount) {
+            iziToast.show({
+              title: 'Sorry',
+              message: 'Can not paid more than discount amount',
+              position: 'topRight',
+              color: 'red', // blue, red, green, yellow
+          });
+            $('#discount').val(0);
           }
         });
 

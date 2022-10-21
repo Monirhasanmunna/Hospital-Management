@@ -17,8 +17,8 @@ class PathologyReferralSeeder extends Seeder
     {
         pathologyReferral::updateOrCreate([
             'code'   => 1000,
-            'name'   => 'Ashraf',
-            'mobile' => '01745121475'
+            'name'   => 'Self',
+            'mobile' => '00000000000'
         ]);
 
         pathologyReferral::updateOrCreate([

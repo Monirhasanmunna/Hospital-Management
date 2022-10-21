@@ -24,7 +24,6 @@
                       <th>Debit</th>
                       <th>Credit</th>
                       <th>Balance</th>
-                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -35,17 +34,6 @@
                       <td>{{$account->debit}}</td>
                       <td>{{$account->credit}}</td>
                       <td>{{$account->balance}}</td>
-                      <td>
-                        <div class="dropdown">
-                          <button class="btn btn-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Action
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" onclick="editAccount({{$account->id}})" href="javascript:void(0)"><i class="fa-regular fa-pen-to-square"></i>Edit</a>
-                            <a class="dropdown-item" onclick="return confirm('Are you sure to delete this data..??')" href="{{ route('app.account.delete',$account->id) }}"><i class="fa-solid fa-trash"></i>Delete</a>
-                          </div>
-                        </div>
-                      </td>
                     </tr>
                     @endforeach
                   </tbody>

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->integer('patient_id');
             $table->integer('refd_amount');
-            $table->integer('refd_paid_amount')->nullable();
-            $table->integer('doctor_paid')->nullable();
-            $table->integer('co_paid')->nullable();
+            $table->integer('refd_paid_amount')->default(0);
+            $table->integer('doctor_paid')->default(0);
+            $table->integer('refferel_paid')->default(0);
             $table->timestamps();
         });
     }
